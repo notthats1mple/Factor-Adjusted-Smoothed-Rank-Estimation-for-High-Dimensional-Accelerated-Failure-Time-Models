@@ -1,0 +1,313 @@
+\section{Theoretical properties}
+\label{sec:theory}
+
+The analysis combines conditional score control, local event information, and estimated-design geometry to establish finite-sample coefficient bounds. For the ordinary model $\mathcal M_0$, the reference predictor is exact. Primitive factor conditions then supply the design event, and the extension to $\mathcal M_1$ adds a separate approximation term. Pairing and contraction \citep{ClemencconEtAl2008} and localized regularization \citep{NegahbanEtAl2012} provide the analytic tools.
+
+\subsection{Conditional setup and design geometry}
+\label{subsec:theory-setup}
+Write $q=d+K$, $P=p+q$, $k=s+q\ge1$, $N=n(n-1)$, and condition on $\mathcal \bm{D}_n=\sigma(\bm{D}_1,\ldots,\bm{D}_n)$, where $\bm{D}_i=(\bm{Z}_i^\top,\bm{f}_i^\top,\bm{u}_i^\top)^\top$. The factor estimates, centering, and tuning in this analysis are covariate-measurable. Outcomes are conditionally independent with patient-specific conditional laws. The criterion remains
+\begin{equation}
+ \begin{gathered}
+Q(\bm{\vartheta})=L_{n,h}(\bm{\vartheta})+\lambda\|\bm{\beta}\|_1,\\
+ L_{n,h}(\bm{\vartheta})=\frac1N\sum_{i\ne j}\Delta_i\ell_h\{Y_j-Y_i+\bm{w}_{ij}^\top\bm{\vartheta}\},
+ \end{gathered}
+ \label{eq:theory-objective}
+\end{equation}
+where $\ell_h(t)=t\Phi(t/h)+h\phi(t/h)$, $\widehat{\bm{W}}=(\bm{Z}_c,\widehat{\bm{F}},\widehat{\bm{U}})$ is centered, and $\bm{w}_{ij}=\widehat{\bm{W}}_i-\widehat{\bm{W}}_j$. In $\mathcal M_0$, the reference point is
+\begin{equation}
+ \begin{gathered}
+\bm{\vartheta}^\dagger=(\bm{\theta}_0^\top,(\widehat{\bm{B}}^\top\bm{\beta}_0)^\top,\bm{\beta}_0^\top)^\top,
+ \\
+ \widehat{\bm{W}}\bm{\vartheta}^\dagger=\bm{\eta}_c^0.
+ \end{gathered}
+ \label{eq:theory-ordinary-reference}
+\end{equation}
+Conditioning fixes the sample-dependent reference. Its representation accommodates unrestricted $\|\bm{B}^\top\bm{\beta}_0\|_2$.
+
+Two sample scales are kept distinct:
+\begin{equation}
+ \begin{gathered}
+V_n=\max_{j\le P}\frac{\|\widehat{\bm{W}}_{\cdot j}\|_2}{\sqrt n},\\
+ M_n=\max_{i,j}|\widehat W_{ij}|,\\
+ \widehat{\bm{\Gamma}}=\frac1N\sum_{i\ne j}\bm{w}_{ij}\bm{w}_{ij}^\top
+               =\frac{2}{n-1}\widehat{\bm{W}}^\top\widehat{\bm{W}}.
+ \end{gathered}
+ \label{eq:theory-scales}
+\end{equation}
+The column scale $V_n$ controls stochastic fluctuations and score bias. The larger entry envelope $M_n$ is used only to keep predictors inside a common local information interval.
+For $\bm{v}=(\bm{v}_a^\top,\bm{v}_\beta^\top)^\top$, define
+\begin{equation}
+ \mathcal C(S)=\{\bm{v}:\|(\bm{v}_\beta)_{S^c}\|_1
+          \le3(\|(\bm{v}_\beta)_S\|_1+\|\bm{v}_a\|_1)\}.
+ \label{eq:theory-cone}
+\end{equation}
+On this cone, $\|\bm{v}\|_1\le4\sqrt{k}\|\bm{v}\|_2$. Thus the unpenalized block contributes to the effective dimension.
+
+\begin{assumption}[Conditional restricted design]
+\label{ass:conditional-design}
+The covariate realization satisfies, for some $\kappa_X>0$,
+\begin{equation}
+ \bm{v}^\top\widehat{\bm{\Gamma}} \bm{v}\ge\kappa_X\|\bm{v}\|_2^2
+ \quad\text{for every }\bm{v}\in\mathcal C(S).
+ \label{eq:conditional-re}
+\end{equation}
+\end{assumption}
+Assumption~\ref{ass:conditional-design} controls the estimated design on the error cone $\mathcal C(S)$, the geometry relevant to penalized estimation.
+
+Assumptions~\ref{ass:common-error}--\ref{ass:overlap} specify the common error law, conditional censoring, bounded error density, and a design-uniform local information interval. They permit censoring atoms and log-time errors without moments. Put
+\begin{equation}
+ c_{\rm loc}=A m_\varepsilon^2g_0^2,\qquad
+ c_\phi=2\Phi(1)-1,\qquad
+ \kappa=c_{\rm loc}c_\phi\kappa_X.
+ \label{eq:theory-curvature-constants}
+\end{equation}
+
+\subsection{Score bias, pairwise fluctuations, and curvature}
+\label{subsec:theory-lemmas}
+Let $R_i=Y_i-\eta_i^0$. To cover both models in a single set of analytic lemmas, allow a covariate-measurable centered vector $\mathbf d$ with $\|\mathbf d\|_\infty\le b$, such that
+\[
+ \widehat{\bm{W}}\bm{\vartheta}^\dagger=\bm{\eta}_c^0+\mathbf d,
+ \qquad r_{ij}(\bm{\vartheta}^\dagger)=R_j-R_i+d_i-d_j.
+\]
+For $\mathcal M_0$, take $b=0$. Define the conditional risk \emph{contrast} and mean score by
+\begin{equation}
+ \begin{gathered}
+\mathcal R_h(\bm{v})=E\{L_{n,h}(\bm{\vartheta}^\dagger+\bm{v})-L_{n,h}(\bm{\vartheta}^\dagger)
+                    \mid\mathcal \bm{D}_n\},\\
+ \bm{g}_h=E\{\nabla L_{n,h}(\bm{\vartheta}^\dagger)\mid\mathcal \bm{D}_n\}.
+ \end{gathered}
+ \label{eq:conditional-contrast}
+\end{equation}
+The loss increment is bounded in absolute value by $2V_n\|\bm{v}\|_1$, making~\eqref{eq:conditional-contrast} integrable without an error-moment assumption.
+
+\begin{lemma}[Score and contrast control]
+\label{lem:conditional-process}
+Suppose the common-error and conditional-censoring assumptions hold. Fix $0<\alpha<1/4$ and $r>0$ after conditioning, and set
+\begin{equation}
+ t_\alpha=\sqrt{\frac{\log(2P/\alpha)}n},\qquad
+ \mu(b,h)=2V_nL_\varepsilon\{2b+h\sqrt{2/\pi}\}.
+ \label{eq:theory-score-level}
+\end{equation}
+Then $\|\bm{g}_h\|_\infty\le\mu(b,h)$. Each of the following inequalities holds with conditional probability at least $1-\alpha$:
+\begin{align}
+ \|\nabla L_{n,h}(\bm{\vartheta}^\dagger)-\bm{g}_h\|_\infty
+       &\le\sqrt8\,V_nt_\alpha, \label{eq:score-deviation}\\
+ \sup_{\|\bm{v}\|_1\le r}
+ |L_{n,h}(\bm{\vartheta}^\dagger+\bm{v})-L_{n,h}(\bm{\vartheta}^\dagger)-\mathcal R_h(\bm{v})|
+       &\le96V_nrt_\alpha. \label{eq:contrast-deviation}
+\end{align}
+The two events hold jointly with probability at least $1-2\alpha$.
+\end{lemma}
+The stochastic scale is $V_n\sqrt{\log(2P/\alpha)/n}$: patients are the independent sampling units, and the bound is uniform in $h$. Averaging over all pairings retains patient-specific censoring laws. Rademacher moment contraction \citep{ClemencconEtAl2008,LedouxTalagrand1991} yields column-scale control in Appendix~\ref{subapp:pair-process}.
+
+\begin{lemma}[Conditional local curvature]
+\label{lem:conditional-curvature}
+Under the outcome conditions and Assumption~\ref{ass:conditional-design}, if $h\le A/2$ and
+\begin{equation}
+ 2b+2M_n\|\bm{v}\|_1\le A/2,
+ \label{eq:local-radius-vector}
+\end{equation}
+then, for $\bm{v}\in\mathcal C(S)$,
+\begin{equation}
+ \mathcal R_h(\bm{v})-\bm{g}_h^\top \bm{v}
+ \ge\frac{c_{\rm loc}c_\phi}{2}\bm{v}^\top\widehat{\bm{\Gamma}} \bm{v}
+ \ge\frac\kappa2\|\bm{v}\|_2^2.
+ \label{eq:local-risk-curvature}
+\end{equation}
+\end{lemma}
+Lemma~\ref{lem:conditional-curvature} supplies curvature of the conditional expected contrast on $\mathcal C(S)$, while Lemma~\ref{lem:conditional-process} controls its empirical fluctuation. The event-weighted difference density permits censoring-induced atoms.
+
+\subsection{Ordinary-model estimation and existence}
+\label{subsec:ordinary-theorem}
+\begin{theorem}[Conditional guarantee in $\mathcal M_0$]
+\label{thm:conditional-ordinary}
+Suppose $n\ge2$, the ordinary model and outcome conditions hold, and the conditioned design satisfies Assumption~\ref{ass:conditional-design}. For $0<\alpha<1/4$, choose $h>0$, $\lambda>0$, and
+\begin{equation}
+ \lambda\ge4\mu(0,h)+384V_nt_\alpha,
+ \qquad R=\frac{8\sqrt{k}\lambda}{\kappa}.
+ \label{eq:conditional-tuning}
+\end{equation}
+If
+\begin{equation}
+ h\le A/2,\qquad 8M_n\sqrt{k}R\le A/2,
+ \label{eq:ordinary-locality}
+\end{equation}
+then, with conditional probability at least $1-2\alpha$, the set of global minimizers of $Q$ is nonempty and compact. Every such minimizer satisfies
+\begin{equation}
+ \begin{gathered}
+\|\widehat{\bm{\vartheta}}-\bm{\vartheta}^\dagger\|_2
+       \le\frac{8\sqrt{k}\lambda}{\kappa},\\
+ \|\widehat{\bm{\beta}}-\bm{\beta}_0\|_1\le\frac{32k\lambda}{\kappa}.
+ \end{gathered}
+ \label{eq:conditional-error-bounds}
+\end{equation}
+In particular the first bound also controls $\|\widehat{\bm{\beta}}-\bm{\beta}_0\|_2$.
+\end{theorem}
+Theorem~\ref{thm:conditional-ordinary} establishes finite attainment and coefficient bounds on the same statistical event. Appendix~\ref{subapp:localization} localizes the sublevel set through $\bm{\vartheta}^\dagger$ inside a compact ball.
+
+The localized basic inequality follows the decomposable-regularization framework \citep{NegahbanEtAl2012} with a seminorm penalty on the full parameter. Including the nuisance directions yields the sharper cone relation
+\begin{equation}
+ \|(\bm{v}_\beta)_{S^c}\|_1\le3\|(\bm{v}_\beta)_S\|_1+\|\bm{v}_a\|_1.
+ \label{eq:sharp-cone}
+\end{equation}
+The nuisance error is $\widehat{\bm{\gamma}}-\widehat{\bm{B}}^\top\bm{\beta}_0$, measured in the estimated-factor coordinates. The sparse molecular coefficient and the deployment slope retain their distinct definitions from Section~\ref{sec:estimation}.
+
+\subsection{From primitive factor conditions to estimated-design geometry}
+\label{subsec:primitive-design}
+The primitive conditions concern the joint covariate distribution. They supply the estimated-design geometry separately from the assumptions on $\varepsilon_i$.
+
+\begin{assumption}[Independent jointly sub-Gaussian factor design]
+\label{ass:primitive-factor}
+For fixed $K\ge1$ and $d\ge0$, the centered $\bm{D}_i$ are independent and identically distributed and satisfy
+\begin{equation}
+ \begin{gathered}
+c_D \bm{I}_P\preceq\bm{\Sigma}_D:=E(\bm{D}_i\bm{D}_i^\top)\preceq C_D \bm{I}_P,
+ \\
+\sup_{\|\bm{v}\|_2=1}\|\bm{v}^\top \bm{D}_i\|_{\psi_2}\le L_D.
+ \end{gathered}
+ \label{eq:primitive-subgaussian}
+\end{equation}
+Here $\|U\|_{\psi_2}=\inf\{t>0:E\exp(U^2/t^2)\le2\}$. Also $E(\bm{f}_i\bm{f}_i^\top)=\bm{I}_K$, $E(\bm{f}_i\bm{u}_i^\top)=0$, and the deterministic loading matrix obeys
+\begin{equation}
+ c_B \bm{I}_K\preceq \bm{B}^\top \bm{B}/p\preceq C_B \bm{I}_K,
+ \qquad \max_{j\le p}\|\bm{B}_{j\cdot}\|_2\le L_B.
+ \label{eq:primitive-loadings}
+\end{equation}
+All displayed constants are uniform in $n,p$.
+\end{assumption}
+The covariance lower bound and factor pervasiveness jointly specify a sufficient design regime. The normalization and alignment follow the PCA framework of \citet{BaiNg2013} and \citet{FanEtAl2020}; Assumption~\ref{ass:primitive-factor} supports the norm bounds below.
+
+For $0<\delta<1/4$, put
+\begin{equation}
+ \begin{aligned}
+ L_\delta&=\log(64nP/\delta),&
+ t_\delta&=\sqrt{L_\delta/n},&
+ \tau_\delta&=t_\delta+L_\delta/n,\\
+ a_\delta&=\tau_\delta+p^{-1/2},&
+ r_{F,\delta}&=n^{-1/2}+\sqrt{L_\delta/p}.&&
+ \end{aligned}
+ \label{eq:primitive-rates}
+\end{equation}
+The quantity $\chi_n$ in Section~\ref{sec:estimation} continues to denote the separate sample-existence criterion.
+
+\begin{proposition}[PCA and design event]
+\label{prop:pca-design-event}
+Under Assumption~\ref{ass:primitive-factor}, there are fixed positive constants $c,C$ such that, if $n\wedge p\ge CL_\delta$, an event $\mathcal E_D$ has probability at least $1-\delta$ and the following properties. The selected spectrum is separated at $K$, $cp\bm{I}_K\preceq\widehat{\bm{\Lambda}}\preceq Cp\bm{I}_K$, and
+\begin{equation}
+\begin{gathered}
+\bm H=\widehat{\bm\Lambda}^{-1}\widehat{\bm B}^\top\bm B,\\
+\bm E_F=\widehat{\bm F}-\bm F_c\bm H^\top
+       =\bm U_c\widehat{\bm B}\widehat{\bm\Lambda}^{-1},\\
+\|\bm H\|_{\rm op}+\|\bm H^{-1}\|_{\rm op}\le C.
+\end{gathered}
+\label{eq:pca-alignment-event}
+\end{equation}
+On this event,
+\begin{equation}
+\begin{gathered}
+\|\bm E_F\|_{\rm op}/\sqrt n\le C(n^{-1/2}+p^{-1/2}),\\
+\max_i\|(\bm E_F)_{i\cdot}\|_2\le Cr_{F,\delta}.
+\end{gathered}\label{eq:pca-factor-rates}
+\end{equation}
+\begin{equation}
+\begin{gathered}
+\max_j\|\widehat{\bm U}_{\cdot j}-\bm U_{c,\cdot j}\|_2/\sqrt n\le Ca_\delta,\\
+V_n\le C,\qquad M_n\le C\sqrt{L_\delta}.
+\end{gathered}\label{eq:pca-residual-rates}
+\end{equation}
+If, additionally,
+\begin{equation}
+ k\tau_\delta\le c,\qquad \sqrt{k}a_\delta\le c,
+ \label{eq:pca-re-requirements}
+\end{equation}
+then Assumption~\ref{ass:conditional-design} holds with a fixed lower bound $\kappa_X\ge c_X>0$. If Assumption~\ref{ass:primitive-factor} is supplemented by $\max_j|D_{ij}|\le L_0$ almost surely for a fixed $L_0$, then $M_n\le C$ on the same type of event.
+\end{proposition}
+The operator, rowwise, and columnwise bounds support factor alignment, predictor approximation, and design transfer, respectively. Appendix~\ref{app:pca-proof} derives them through covariance concentration and sub-Gaussian net bounds \citep{Vershynin2012}, retaining the same-sample dependence of $\widehat{\bm{F}}$ and $\bm{U}_c$.
+
+For clarity, the deterministic transfer step is stated separately. Let $\bm{W}=(\bm{Z}_c,\bm{F}_c\bm{H}^\top,\bm{U}_c)$ and define $\|\bm{x}\|_{\rm pair}^2=N^{-1}\sum_{i\ne j}(x_i-x_j)^2$.
+\begin{lemma}[Column-error transfer]
+\label{lem:design-transfer}
+If $\max_j\|\widehat{\bm{W}}_{\cdot j}-\bm{W}_{\cdot j}\|_2/\sqrt n\le a$ and $\|\bm{W}\bm{v}\|_{\rm pair}\ge\sqrt{\kappa_0}\|\bm{v}\|_2$ for $\bm{v}\in\mathcal C(S)$, then
+\begin{equation}
+ \begin{gathered}
+\|\widehat{\bm{W}}\bm{v}\|_{\rm pair}
+ \ge(\sqrt{\kappa_0}-8a\sqrt{k})\|\bm{v}\|_2,
+ \\
+ \bm{v}\in\mathcal C(S).
+ \end{gathered}
+ \label{eq:design-transfer-bound}
+\end{equation}
+\end{lemma}
+Thus $8a\sqrt{k}\le\sqrt{\kappa_0}/2$ yields a positive estimated-design lower bound. Column mean-square control suffices for this restricted-design transfer.
+
+\subsection{Unconditional ordinary-model rates}
+\label{subsec:unconditional-rates}
+\begin{theorem}[A primitive-condition guarantee for $\mathcal M_0$]
+\label{thm:unconditional-ordinary}
+Suppose the ordinary model, the outcome conditions, and Assumption~\ref{ass:primitive-factor} hold with uniform constants. There are constants $C_*,c_*>0$, depending only on these constants and fixed $K,d$, for which the following statement holds. Take $0<\delta<1/4$, $n\wedge p\ge C_*L_\delta$, and impose~\eqref{eq:pca-re-requirements} with sufficiently small constants. Choose
+\begin{equation}
+ 0<h\le A/2,\qquad
+ \lambda=C_*\{t_\delta+h\},\qquad
+ k\sqrt{L_\delta}\,\lambda\le c_*.
+ \label{eq:unconditional-tuning}
+\end{equation}
+Then, with probability at least $1-3\delta$, the minimizer set is nonempty and compact, and every minimizer satisfies
+\begin{equation}
+ \begin{gathered}
+\|\widehat{\bm{\beta}}-\bm{\beta}_0\|_2\le C\sqrt{k}(t_\delta+h),\\
+ \|\widehat{\bm{\beta}}-\bm{\beta}_0\|_1\le Ck(t_\delta+h).
+ \end{gathered}
+ \label{eq:unconditional-rates}
+\end{equation}
+The corresponding reference-coordinate full-vector bound also holds. Under the additional bounded-coordinate condition of Proposition~\ref{prop:pca-design-event}, the final condition in~\eqref{eq:unconditional-tuning} can instead be $k\lambda\le c_*$.
+\end{theorem}
+With $C_*$ sufficiently large and $c_*$ sufficiently small, the tuning conditions combine smoothing bias and sampling fluctuations. The probability accounts for the design event and both conditional outcome events. Taking $h\le Ct_\delta$ gives the $\ell_2$ rate $\sqrt{kL_\delta/n}$ in both covariate classes. For $p\ge n$, sufficient growth conditions are
+\begin{equation}
+ \begin{array}{ll}
+ k^2L_\delta^2/n\longrightarrow0,
+    &\text{jointly sub-Gaussian design},\\[2pt]
+ k^2L_\delta/n\longrightarrow0,
+    &\text{jointly sub-Gaussian and bounded coordinates}.
+ \end{array}
+ \label{eq:growth-specialization}
+\end{equation}
+For a probability tending to one, take $\delta=\delta_n\downarrow0$ in these sufficient growth conditions. Using the column scale $V_n$ in the stochastic bound removes an additional logarithmic loss from the error rate; the entry envelope $M_n$ remains in the locality requirement.
+
+A concrete construction demonstrates compatibility with Cauchy log-time errors. Take fixed $K=1$, independent Rademacher coordinates in $(\bm{Z}_i,\bm{f}_i,\bm{u}_i)$, and $\bm{B}_j=b_0\ne0$. Let the error be standard Cauchy and independent of the design, and set $\log C_i=\eta_i^0+2$. On $[-1,1]$, the error density is positive and $G=1$, while censoring has positive probability. With $p=n^2$ and $s=\lfloor n^{1/4}\rfloor$, the bounded-design condition holds for polynomially decreasing $\delta_n$.
+
+\subsection{Additional factor effects}
+\label{subsec:augmented-guarantee}
+In $\mathcal M_1$, fix the latent representation described in Section~2. For a covariate-measurable invertible $\bm{H}$, let
+\begin{equation}
+ \begin{gathered}
+\bm{\gamma}^\dagger=\widehat{\bm{B}}^\top\bm{\beta}_0+\bm{H}^{-T}\bm{\xi}_0,\\
+ \mathbf d=\bm{E}_F\bm{H}^{-T}\bm{\xi}_0,\\
+ b_n=\|\mathbf d\|_\infty.
+ \end{gathered}
+ \label{eq:extension-reference}
+\end{equation}
+These reference quantities isolate approximation of the additional factor contribution.
+\begin{corollary}[Conditional and primitive-design extensions]
+\label{cor:augmented}
+Theorem~\ref{thm:conditional-ordinary} holds for this reference point after replacing $\mu(0,h)$ by $\mu(b_n,h)$ and replacing~\eqref{eq:ordinary-locality} by
+\begin{equation}
+ h\le A/2,\qquad 2b_n+8M_n\sqrt{k}R\le A/2.
+ \label{eq:extension-locality}
+\end{equation}
+Under the primitive design assumptions and $\|\bm{\xi}_0\|_2\le\Xi$, Proposition~\ref{prop:pca-design-event} yields $b_n\le C\Xi r_{F,\delta}$. In the unconditional statement take
+\begin{equation}
+ \lambda=C_*\{t_\delta+h+\Xi r_{F,\delta}\},\qquad
+ \Xi r_{F,\delta}+k\sqrt{L_\delta}\lambda\le c_*.
+ \label{eq:extension-tuning}
+\end{equation}
+The $\ell_2$ and $\ell_1$ bounds are respectively
+\begin{equation}
+ C\sqrt{k}\{t_\delta+h+\Xi r_{F,\delta}\},\qquad
+ Ck\{t_\delta+h+\Xi r_{F,\delta}\},
+ \label{eq:extension-rates}
+\end{equation}
+with probability at least $1-3\delta$. With bounded coordinates replace $k\sqrt{L_\delta}\lambda$ by $k\lambda$. Other primitive-design and bandwidth conditions remain in force.
+\end{corollary}
+Setting $\bm{\xi}_0=0$ deletes the approximation term exactly. For $p\ge n$ and bounded $\Xi$, $r_{F,\delta}\lesssim t_\delta$. These extension bounds retain the specified latent representation.
+
+The coefficient guarantees apply to fixed, correct $K$ and covariate-measurable tuning under the stated error, censoring, and design conditions. Section~\ref{sec:computation} connects them to finite numerical accuracy; Section~\ref{sec:numerical} studies the separate outcome-based selection procedure.

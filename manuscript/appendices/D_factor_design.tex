@@ -1,0 +1,179 @@
+\section{Primitive factor-design guarantees}
+\label{app:pca-proof}
+Constants $C,c>0$ in this appendix can change between displays and depend only on the fixed constants of Assumption~\ref{ass:primitive-factor} and on $d,K$. Dependence on the outcome constants is added only in the final estimation step. The probability parameter is $\delta$, and $L_\delta,\tau_\delta,a_\delta,r_{F,\delta}$ are defined in~\eqref{eq:primitive-rates}.
+
+\subsection{One joint covariate event}
+\label{subapp:primitive-concentration}
+Let $\bm{D}$ be the matrix with rows $\bm{D}_i^\top$ and $\bm{D}_c=\bm{J}\bm{D}$. We first construct an event of probability at least $1-\delta$ on which
+\begin{align}
+ \|\bm{D}_c^\top \bm{D}_c/n-\bm{\Sigma}_D\|_{\max}&\le C\tau_\delta,
+ &\max_{i,j}|D_{ij}|&\le C\sqrt{L_\delta}, \label{eq:D-covariance-event}\\
+ \|\bm{U}_c\|_{\rm op}&\le C(\sqrt n+\sqrt p),
+ &\max_i\|\bm{u}_{c,i}\|_2&\le C\sqrt p, \label{eq:D-noise-event}\\
+ \max_i\|\bm{B}^\top \bm{u}_{c,i}\|_2&\le C\sqrt{pL_\delta},
+ &c\bm{I}_K\preceq \bm{F}_c^\top \bm{F}_c/n&\preceq C\bm{I}_K. \label{eq:D-factor-event}
+\end{align}
+Here $\bm{u}_{c,i}$ is row $i$ of $\bm{U}_c$ written as a column. The prerequisite is $n\wedge p\ge CL_\delta$. The following concentration bounds construct this joint design event.
+
+For every coordinate $j$, sub-Gaussian tails and a union bound over $nP$ variables give the maximum in~\eqref{eq:D-covariance-event}. The sample means obey $\max_j|\bar{\bm{D}}_j|\le C\sqrt{L_\delta/n}$. Products of two uniformly sub-Gaussian coordinates are uniformly sub-exponential; this does not require independence between the coordinates. Bernstein's inequality and a union bound over $P^2$ products give
+\[
+ \max_{j,l}|n^{-1}\sum_iD_{ij}D_{il}-\bm{\Sigma}_{D,jl}|
+ \le C\{\sqrt{L_\delta/n}+L_\delta/n\}.
+\]
+Subtracting $\bar{\bm{D}}\bar{\bm{D}}^\top$ proves the covariance part of~\eqref{eq:D-covariance-event}. Since $K$ is fixed and $\bm{\Sigma}_f=\bm{I}_K$, its factor block gives the final spectral statement of~\eqref{eq:D-factor-event} when the size constant is sufficiently large. It also gives
+\begin{equation}
+ \max_j\|\bm{U}_{c,\cdot j}\|_2/\sqrt n\le C,
+ \qquad \max_j\|\bm{F}_c^\top \bm{U}_{c,\cdot j}/n\|_2\le C\tau_\delta,
+ \label{eq:D-column-crosscov}
+\end{equation}
+because $E(\bm{f}_i\bm{u}_i^\top)=0$.
+
+For completeness, a bilinear net argument controls the noise operator norm even though coordinates within each $\bm{u}_i$ may be dependent. For fixed unit vectors $\bm{a}\in\mathbb R^n$ and $b\in\mathbb R^p$, $\bm{a}^\top \bm{U}b=\sum_i a_i b^\top \bm{u}_i$ is centered sub-Gaussian with a fixed norm, by independence across patients and the joint sub-Gaussian condition. Apply its tail bound to $1/4$-nets of the two spheres, with at most $9^n$ and $9^p$ points. The net approximation and a union bound yield
+\[
+ \|\bm{U}\|_{\rm op}\le C\{\sqrt n+\sqrt p+\sqrt{\log(1/\delta)}\}.
+\]
+Centering is a contraction, and $n\wedge p\ge CL_\delta$ absorbs the last term. A $1/2$-net for a single row, followed by a union bound over patients, gives $\max_i\|\bm{u}_i\|_2\le C(\sqrt p+\sqrt{L_\delta})$. Since $\|\bar{\bm{u}}\|_2\le\max_i\|\bm{u}_i\|_2$, centering costs at most a factor two, proving~\eqref{eq:D-noise-event}. These are standard net and concentration tools for jointly sub-Gaussian vectors \citep{Vershynin2012}.
+
+Each coordinate of $\bm{B}^\top \bm{u}_i$ has sub-Gaussian norm at most $C\sqrt p$, because $\|\bm{B}_{\cdot l}\|_2\le C\sqrt p$. A union bound over the fixed $K$ projections and $n$ patients, with the same centering argument, proves the first part of~\eqref{eq:D-factor-event}. Assigning the constituent events fixed fractions of $\delta$ and increasing $C$ makes their intersection have probability at least $1-\delta$. All statements below are deterministic on this intersection. In particular, $\bm{H}$ may be a function of the same data; the bounds are uniform over the relevant vectors and do not require $\bm{H}$ to be independent.
+
+\subsection{Spectral separation and an explicit alignment}
+\label{subapp:pca-alignment-proof}
+The signal matrix $\bm{F}_c\bm{B}^\top$ has rank $K$ and nonzero singular values between $c\sqrt{np}$ and $C\sqrt{np}$. The perturbation $\bm{U}_c$ has norm at most $C(\sqrt n+\sqrt p)$. The singular-value perturbation inequality therefore implies
+\[
+ c\sqrt{np}\le s_K(\bm{X}_c)\le s_1(\bm{X}_c)\le C\sqrt{np},
+ \qquad s_{K+1}(\bm{X}_c)\le\|\bm{U}_c\|_{\rm op},
+\]
+where the last singular value is read as zero if the index exceeds the dimension. With sufficiently large $n\wedge p$, the latter is strictly below $s_K(\bm{X}_c)$. Thus $cp\bm{I}_K\preceq\widehat{\bm{\Lambda}}\preceq Cp\bm{I}_K$ and there is a gap at the selected rank.
+
+The PCA identities give, without any probabilistic approximation,
+\[
+ \widehat{\bm{F}}=\bm{X}_c\widehat{\bm{B}}\widehat{\bm{\Lambda}}^{-1}
+ =\bm{F}_c\bm{B}^\top\widehat{\bm{B}}\widehat{\bm{\Lambda}}^{-1}
+       +\bm{U}_c\widehat{\bm{B}}\widehat{\bm{\Lambda}}^{-1}
+ =\bm{F}_c\bm{H}^\top+\bm{E}_F,
+\]
+with $\bm{H},\bm{E}_F$ from~\eqref{eq:pca-alignment-event}. Since $\widehat{\bm{B}}^\top\widehat{\bm{B}}=\widehat{\bm{\Lambda}}$,
+\[
+ \|\widehat{\bm{B}}\widehat{\bm{\Lambda}}^{-1}\|_{\rm op}
+ =\lambda_{\min}(\widehat{\bm{\Lambda}})^{-1/2}\le C/\sqrt p.
+\]
+It follows that
+\begin{equation}
+ \frac{\|\bm{E}_F\|_{\rm op}}{\sqrt n}
+ \le C\left(\frac1{\sqrt n}+\frac1{\sqrt p}\right).
+ \label{eq:D-factor-operator}
+\end{equation}
+This derivation does not first assume that $\bm{H}$ is invertible. Instead, $\widehat{\bm{F}}$ has all singular values $\sqrt n$, and~\eqref{eq:D-factor-operator} makes $\bm{F}_c\bm{H}^\top=\widehat{\bm{F}}-\bm{E}_F$ have all its nonzero singular values bounded above and below by fixed multiples of $\sqrt n$. Since $\bm{F}_c$ has the same scale, $\bm{H}$ must be invertible, with $\|\bm{H}\|_{\rm op}+\|\bm{H}^{-1}\|_{\rm op}\le C$. Sample alignment is not assumed orthogonal, consistently with the normalization distinction discussed by \citet{BaiNg2013}.
+
+\subsection{Maximum-row factor error and maximum-column residual error}
+\label{subapp:pca-row-column}
+Set $\bm{A}_F=\bm{F}_c^\top\widehat{\bm{F}}/n$, so $\|\bm{A}_F\|_{\rm op}\le C$ and
+\[
+ \widehat{\bm{B}}=\bm{B}\bm{A}_F+\bm{U}_c^\top\widehat{\bm{F}}/n.
+\]
+For a row error written as a column,
+\begin{equation}
+ e_{F,i}=\widehat{\bm{\Lambda}}^{-1}
+       \{\bm{A}_F^\top \bm{B}^\top \bm{u}_{c,i}+\widehat{\bm{F}}^\top \bm{U}_c\bm{u}_{c,i}/n\}.
+ \label{eq:D-row-expansion}
+\end{equation}
+The first term is at most $C\sqrt{L_\delta/p}$. For the second, apply only deterministic norm inequalities:
+\begin{align*}
+ \frac Cp\frac{\|\widehat{\bm{F}}\|_{\rm op}}n
+       \|\bm{U}_c\|_{\rm op}\max_i\|\bm{u}_{c,i}\|_2
+ &\le\frac Cp\frac1{\sqrt n}(\sqrt n+\sqrt p)\sqrt p\\
+ &\le C(p^{-1/2}+n^{-1/2}).
+\end{align*}
+Combining the two proves the maximum-row bound in~\eqref{eq:pca-factor-rates}. The calculation is valid with same-sample factor estimation: no independence between $\widehat{\bm{F}}$ and $\bm{U}_c$ was used.
+
+Let $\widehat P_F=\widehat{\bm{F}}\widehat{\bm{F}}^\top/n$ and let $\bm{b}_j$ be column $j$ of $\bm{B}^\top$. The residual difference satisfies
+\begin{equation}
+ \widehat{\bm{U}}_{\cdot j}-\bm{U}_{c,\cdot j}
+   =(I-\widehat P_F)\bm{F}_c\bm{b}_j-\widehat P_F\bm{U}_{c,\cdot j}.
+ \label{eq:D-residual-difference}
+\end{equation}
+The first term equals $-(I-\widehat P_F)\bm{E}_F\bm{H}^{-T}\bm{b}_j$ and, divided by $\sqrt n$, is at most $C(n^{-1/2}+p^{-1/2})$, because $\|\bm{b}_j\|_2\le L_B$. For the second term,
+\begin{align*}
+ \frac{\|\widehat P_F\bm{U}_{c,\cdot j}\|_2}{\sqrt n}
+ &=\left\|\frac{\widehat{\bm{F}}^\top \bm{U}_{c,\cdot j}}n\right\|_2\\
+ &\le\|\bm{H}\|_{\rm op}\left\|\frac{\bm{F}_c^\top \bm{U}_{c,\cdot j}}n\right\|_2
+       +\frac{\|\bm{E}_F\|_{\rm op}}{\sqrt n}
+        \frac{\|\bm{U}_{c,\cdot j}\|_2}{\sqrt n}\\
+ &\le C\{\tau_\delta+p^{-1/2}\}.
+\end{align*}
+Here $n^{-1/2}\le\tau_\delta$. This proves the maximum-column residual bound in~\eqref{eq:pca-residual-rates}. Factor-error operator control and residual column control imply
+\begin{equation}
+ \begin{gathered}
+\max_{j\le P}\frac{\|\widehat{\bm{W}}_{\cdot j}-\bm{W}_{\cdot j}\|_2}{\sqrt n}
+       \le Ca_\delta,
+ \\
+ \bm{W}=(\bm{Z}_c,\bm{F}_c\bm{H}^\top,\bm{U}_c).
+ \end{gathered}
+ \label{eq:D-design-column-error}
+\end{equation}
+The clinical block has zero approximation error.
+
+To control the scales in the conditional theorem, first note
+\[
+ \max_j\|\bm{X}_{c,\cdot j}\|_2/\sqrt n
+ \le\max_j\{\|\bm{F}_c\|_{\rm op}\|\bm{b}_j\|_2/\sqrt n
+                     +\|\bm{U}_{c,\cdot j}\|_2/\sqrt n\}\le C.
+\]
+Since $\widehat{\bm{U}}=(I-\widehat P_F)\bm{X}_c$, its column norms are no larger. The factor columns have norm $\sqrt n$, and clinical columns are bounded using~\eqref{eq:D-covariance-event}. Thus $V_n\le C$.
+Also
+\[
+ \max_j\|\widehat{\bm{B}}_{j\cdot}\|_2
+ \le\max_j\{\|\bm{b}_j\|_2\|\bm{A}_F\|_{\rm op}
+                    +\|\bm{U}_{c,\cdot j}\|_2/\sqrt n\}\le C.
+\]
+Using $\widehat{\bm{F}}=\bm{F}_c\bm{H}^\top+\bm{E}_F$ and the maximum-row bound gives $\max_i\|\widehat{\bm{f}}_i\|_2\le C\sqrt{L_\delta}$. Together with $\widehat{\bm{U}}=\bm{X}_c-\widehat{\bm{F}}\widehat{\bm{B}}^\top$ and the row-loading bound, this yields $M_n\le C\sqrt{L_\delta}$. If the raw $\bm{D}_i$ coordinates are uniformly bounded, the centered $\bm{F}_c,\bm{U}_c,\bm{Z}_c$ coordinates are bounded, while $r_{F,\delta}$ is bounded under $n\wedge p\ge CL_\delta$. The same argument then gives $M_n\le C$. Coordinate boundedness is an additional assumption, not a consequence of observing a finite data matrix.
+
+\subsection{Ideal geometry and proof of the transfer lemma}
+\label{subapp:re-transfer-proof}
+Write $\bm{W}=\bm{D}_c\bm{T}_H$ with $\bm{T}_H=\operatorname{diag}(\bm{I}_d,\bm{H}^\top,\bm{I}_p)$. On the joint event, $\|\bm{T}_H\bm{v}\|_2\ge c\|\bm{v}\|_2$ and $\|\bm{T}_H\bm{v}\|_1\le C\|\bm{v}\|_1$ because $K$ is fixed and $\bm{H},\bm{H}^{-1}$ are controlled. These inequalities hold for the data-dependent $\bm{T}_H$ pointwise. The covariance event gives
+\begin{align}
+ \|\bm{W}\bm{v}\|_2^2/n
+ &\ge (\bm{T}_H\bm{v})^\top\bm{\Sigma}_D(\bm{T}_H\bm{v})-C\tau_\delta\|\bm{T}_H\bm{v}\|_1^2\notag\\
+ &\ge(c_0-C_0k\tau_\delta)\|\bm{v}\|_2^2,
+       \qquad \bm{v}\in\mathcal C(S).
+ \label{eq:D-ideal-re}
+\end{align}
+For $k\tau_\delta$ sufficiently small this is bounded below by a fixed multiple of $\|\bm{v}\|_2^2$. Centering yields $\|\bm{W}\bm{v}\|_{\rm pair}^2=2\|\bm{W}\bm{v}\|_2^2/(n-1)$, so the ideal pairwise restricted bound holds with some fixed $\kappa_0>0$.
+
+For any vector $\bm{x}\in\mathbb R^n$,
+\begin{equation}
+ \|\bm{x}\|_{\rm pair}^2=\frac{2}{n-1}\|\bm{J}\bm{x}\|_2^2.
+ \label{eq:D-pair-identity}
+\end{equation}
+Under the premise of Lemma~\ref{lem:design-transfer},
+\[
+ \|(\widehat{\bm{W}}-\bm{W})\bm{v}\|_2/\sqrt n
+ \le\sum_j|v_j|\|\widehat{\bm{W}}_{\cdot j}-\bm{W}_{\cdot j}\|_2/\sqrt n
+ \le a\|\bm{v}\|_1.
+\]
+Equation~\eqref{eq:D-pair-identity} and $n\ge2$ give
+\[
+ \|(\widehat{\bm{W}}-\bm{W})\bm{v}\|_{\rm pair}\le2a\|\bm{v}\|_1
+       \le8a\sqrt{k}\|\bm{v}\|_2\quad (\bm{v}\in\mathcal C(S)).
+\]
+The triangle inequality proves~\eqref{eq:design-transfer-bound}. Combine it with~\eqref{eq:D-design-column-error} and~\eqref{eq:D-ideal-re}. If $\sqrt{k}a_\delta$ is sufficiently small, the resulting lower bound is $\kappa_X\ge c_X>0$. This completes Proposition~\ref{prop:pca-design-event}. The max-norm covariance argument yields the sufficient requirement on $k\tau_\delta$.
+
+\subsection{Integrating the conditional result}
+\label{subapp:unconditional-proof}
+On $\mathcal E_D$ in the ordinary model, $b_n=0$, $V_n\le C$, $M_n\le C\sqrt{L_\delta}$, and the curvature constant has a fixed positive lower bound. Apply Theorem~\ref{thm:conditional-ordinary} with $\alpha=\delta$. Since $t_\alpha\le t_\delta$ and $\mu(0,h)\le Ch$, sufficiently large $C_*$ in~\eqref{eq:unconditional-tuning} makes the conditional penalty inequality hold. The condition $k\sqrt{L_\delta}\lambda\le c_*$ ensures
+\[
+ 8M_n\sqrt{k}R=64M_nk\lambda/\kappa\le A/2
+\]
+for sufficiently small $c_*$. In the bounded-coordinate case, $k\lambda\le c_*$ suffices. The conditional bounds become~\eqref{eq:unconditional-rates}.
+
+The total failure probability is at most
+\[
+ \Pr(\mathcal E_D^c)
+    +E\{\mathbf1_{\mathcal E_D}\Pr(\text{outcome failure}\mid\mathcal \bm{D}_n)\}
+ \le\delta+2\delta=3\delta.
+\]
+No independence between the design event and the outcome event is needed. The theorem therefore controls the feasible estimator, not only a latent-design minimizer.
+
+For Corollary~\ref{cor:augmented}, $b_n\le\max_i\|e_{F,i}\|_2\|\bm{H}^{-T}\bm{\xi}_0\|_2\le C\Xi r_{F,\delta}$ on $\mathcal E_D$. The penalty level in~\eqref{eq:extension-tuning} dominates $4\mu(b_n,h)+384V_nt_\alpha$. Its locality inequality ensures $2b_n+64M_nk\lambda/\kappa\le A/2$. The conditional extension proved in Appendix~\ref{subapp:localization}, followed by the same probability integration, gives~\eqref{eq:extension-rates}.
+
+Finally, with $p\ge n$ and $h\le Ct_\delta$, we have $\tau_\delta\lesssim t_\delta$ when $L_\delta/n$ is small, and $a_\delta\lesssim t_\delta$. The jointly sub-Gaussian condition $k^2L_\delta^2/n\to0$ implies both $k\tau_\delta\to0$ and $\sqrt{k}a_\delta\to0$, and ensures locality. With bounded coordinates, $k^2L_\delta/n\to0$ suffices. For the compatible example in the text, independent Rademacher coordinates have identity covariance and a uniformly bounded joint sub-Gaussian norm by the product moment generating function. The Cauchy density is globally bounded and is at least $1/(2\pi)$ on $[-1,1]$; $C_i^*=2$ gives $G_i=1$ there. Positive censoring probability is $\Pr(\varepsilon_i>2)>0$. Taking $p=n^2$, $k=\lfloor n^{1/4}\rfloor+d+1$, and $\delta_n=n^{-2}$ makes $k^2L_{\delta_n}/n\to0$. This verifies compatibility without a finite error mean or variance.

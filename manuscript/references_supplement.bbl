@@ -1,0 +1,16 @@
+% Entries cited within Online Resource 1.
+\begin{thebibliography}{99}
+
+\bibitem[Bai and Ng(2013)]{BaiNg2013}
+Bai, J., \& Ng, S. (2013). Principal components estimation and identification of static factors. \textit{Journal of Econometrics}, \textit{176}(1), 18--29. \url{https://doi.org/10.1016/j.jeconom.2013.03.007}
+
+\bibitem[Cl{\'e}men{\c c}on et~al.(2008)]{ClemencconEtAl2008}
+Cl{\'e}men{\c c}on, S., Lugosi, G., \& Vayatis, N. (2008). Ranking and empirical minimization of {U}-statistics. \textit{The Annals of Statistics}, \textit{36}(2), 844--874. \url{https://doi.org/10.1214/009052607000000910}
+
+\bibitem[Ledoux and Talagrand(1991)]{LedouxTalagrand1991}
+Ledoux, M., \& Talagrand, M. (1991). \textit{Probability in {Banach} Spaces: Isoperimetry and Processes}. Springer. \url{https://doi.org/10.1007/978-3-642-20212-4}
+
+\bibitem[Vershynin(2012)]{Vershynin2012}
+Vershynin, R. (2012). Introduction to the non-asymptotic analysis of random matrices. In Y.~C. Eldar, \& G. Kutyniok (Eds.), \textit{Compressed Sensing: Theory and Applications} (pp. 210--268). Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511794308.006}
+
+\end{thebibliography}

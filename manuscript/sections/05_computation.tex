@@ -1,0 +1,254 @@
+\section{Computation}
+\label{sec:computation}
+
+We solve the partially penalized smoothed-rank objective in the original coefficient coordinates. For a fixed training sample and $(K,h,\lambda)$ with $h,\lambda>0$, write $\widehat{\bm{W}}=(\widehat{\bm{A}},\widehat{\bm{U}})$, $\widehat{\bm{A}}=(\bm{Z}_c,\widehat{\bm{F}})$, $q=d+K$, $P=q+p$, and $\bm{\vartheta}=(\bm{a}^\top,\bm{\beta}^\top)^\top$. The objective is
+\begin{equation}
+\begin{aligned}
+Q(\bm\vartheta)&=f_h(\bm\vartheta)+g_\lambda(\bm\vartheta),\\
+g_\lambda(\bm\vartheta)&=\lambda\|\bm\beta\|_1,\\
+f_h(\bm\vartheta)&=\frac1N\sum_{i\ne j}\Delta_i\ell_h(r_{ij}),\\
+r_{ij}&=Y_j-Y_i+(\widehat{\bm W}_i-\widehat{\bm W}_j)^\top\bm\vartheta,\\
+N&=n(n-1).
+\end{aligned}
+\label{eq:comp-objective}
+\end{equation}
+where $Y_i$ is already on the log-time scale and $\ell_h(r)=r\Phi(r/h)+h\phi(r/h)$. All arrays are finite, $n\ge2$, and $\Delta_i\in\{0,1\}$. PCA and preprocessing remain fixed during a solve.
+
+The reference algorithm is monotone proximal gradient with backtracking. The empirical implementation combines acceleration and qualified second-order refinement. These algorithms specialize composite-convex optimization \citep{BeckTeboulle2009,ParikhBoyd2014} to the pairwise loss and unpenalized block in~\eqref{eq:comp-objective}. Scalable alternatives for the unsmoothed AFT criterion include the prox-linear alternating direction method of multipliers (ADMM) algorithm of \citet{SuderMolstad2022}.
+
+\subsection{Blocked pairwise evaluation}
+\label{subsec:comp-evaluation}
+Compute $\bm{e}=\bm Y-\widehat{\bm{W}}\bm{\vartheta}$. For $i\ne j$, put $V_{ij}=\Delta_i\Phi\{(e_j-e_i)/h\}$, and set $V_{ii}=0$. The gradient is
+\begin{equation}
+ c_i=\sum_jV_{ij}-\sum_jV_{ji},\qquad
+ \nabla f_h(\bm{\vartheta})=\widehat{\bm{W}}^\top \bm{c}/N.
+ \label{eq:comp-gradient}
+\end{equation}
+The coefficients satisfy $\mathbf 1_n^\top \bm{c}=0$. Event patients anchor rows $i$, all other patients contribute as $j$, and the diagonal is excluded from the ordered-pair sum.
+
+For an event-row block $\mathcal I$, form the $|\mathcal I|\times n$ residual differences, accumulate the row and column contributions to $\bm{c}$, and sum the associated losses. This evaluates the complete ordered-pair criterion exactly. With $m=\sum_i\Delta_i$ events and block size $b$, one objective--gradient pass uses $O(nP+mn)$ arithmetic and $O(bn+n+P)$ temporary storage in addition to the stored design. Line-search evaluations contribute further work.
+
+The residual matrix need not be stored either. For any $\bm{v}=(\bm{v}_\theta^\top,\bm{v}_\gamma^\top,\bm{v}_\beta^\top)^\top$ and $\bm{c}\in\mathbb R^n$, the identities
+\begin{equation}
+ \begin{split}
+ \widehat{\bm{W}}\bm{v}&=\bm{Z}_c\bm{v}_\theta+\widehat{\bm{F}}(\bm{v}_\gamma-\widehat{\bm{B}}^\top \bm{v}_\beta)+\bm{X}_c\bm{v}_\beta,\\
+ \widehat{\bm{W}}^\top \bm{c}&=
+ \begin{pmatrix}\bm{Z}_c^\top \bm{c}\\ \widehat{\bm{F}}^\top \bm{c}\\
+ \bm{X}_c^\top \bm{c}-\widehat{\bm{B}}(\widehat{\bm{F}}^\top \bm{c})\end{pmatrix}
+ \end{split}
+ \label{eq:comp-implicit-W}
+\end{equation}
+allow storage of $\bm{X}_c$ and the low-rank factors in place of a duplicate residual matrix. Euclidean updates remain in the original $(\bm{a},\bm{\beta})$ coordinates.
+
+\subsection{Smoothness and a partially penalized proximal step}
+\label{subsec:comp-smoothness}
+Let $\bm{\mathscr L}_\Delta$ be the graph Laplacian with edge weights $\Delta_i+\Delta_j$ for $i<j$. Explicitly,
+\begin{equation}
+ \begin{gathered}
+\bm{\mathscr L}_\Delta=n\operatorname{diag}(\bm\Delta)+m\bm{I}_n
+             -\bm\Delta\mathbf 1_n^\top-\mathbf 1_n\bm\Delta^\top,
+ \\
+ \mathscr B_h=\frac{\|\widehat{\bm{W}}^\top\bm{\mathscr L}_\Delta\widehat{\bm{W}}\|_{\rm op}}
+                    {Nh\sqrt{2\pi}}.
+ \end{gathered}
+ \label{eq:comp-lipschitz}
+\end{equation}
+Here $\bm\Delta=(\Delta_1,\ldots,\Delta_n)^\top$. Pair grouping and $\phi\le\phi(0)$ imply
+\begin{equation}
+ \begin{gathered}
+0\preceq\nabla^2f_h(\bm{\vartheta})
+ \preceq\frac{\widehat{\bm{W}}^\top\bm{\mathscr L}_\Delta\widehat{\bm{W}}}{Nh\sqrt{2\pi}},
+ \\
+ \|\nabla f_h(\bm{x})-\nabla f_h(\bm{y})\|_2\le\mathscr B_h\|\bm{x}-\bm{y}\|_2.
+ \end{gathered}
+ \label{eq:comp-hessian-bound}
+\end{equation}
+This global Lipschitz bound controls numerical step selection. Since $\widehat{\bm{W}}$ is centered,
+\[\begin{gathered}
+ \widehat{\bm{W}}^\top\bm{\mathscr L}_\Delta\widehat{\bm{W}}
+ =n\widehat{\bm{W}}^\top\operatorname{diag}(\bm\Delta)\widehat{\bm{W}}+m\widehat{\bm{W}}^\top\widehat{\bm{W}},
+ \\
+ \mathscr B_h\le\frac{(n+m)\|\widehat{\bm{W}}\|_{\rm op}^2}{Nh\sqrt{2\pi}}.
+\end{gathered}\]
+The Frobenius norm gives a computable upper bound in place of the operator norm. Backtracking also permits step selection without evaluating these norms or forming a full Hessian. The factor $1/h$ governs numerical smoothness, separately from the stochastic scale in Section~\ref{sec:theory}.
+
+For $t>0$, define the soft-thresholding map by $\mathsf S_\tau(z)_j=\operatorname{sign}(z_j)(|z_j|-\tau)_+$. The exact proximal-gradient candidate is
+\begin{equation}
+ \begin{split}
+ T_t(\bm{x})&=\operatorname{prox}_{t g_\lambda}\{\bm{x}-t\nabla f_h(\bm{x})\},\\
+ [T_t(\bm{x})]_a&=\bm{x}_a-t\nabla_a f_h(\bm{x}),\qquad
+ [T_t(\bm{x})]_\beta=\mathsf S_{t\lambda}\{\bm{x}_\beta-t\nabla_\beta f_h(\bm{x})\}.
+ \end{split}
+ \label{eq:comp-prox}
+\end{equation}
+The proximal map leaves the nuisance block unpenalized. Rescaled residual coordinates use the corresponding weighted threshold from Section~\ref{sec:estimation}.
+
+\subsection{Backtracking algorithm and deterministic convergence}
+\label{subsec:comp-algorithm}
+Choose $t_{\max}>0$ and $\zeta,\omega\in(0,1)$. From $\bm{x}=\bm{x}^{(r)}$, try $t=t_{\max}$ and repeatedly replace $t$ by $\zeta t$ until, for $\bm{y}=T_t(\bm{x})$ and $\bm{d}=\bm{y}-\bm{x}$,
+\begin{equation}
+ f_h(\bm{y})\le f_h(\bm{x})+\nabla f_h(\bm{x})^\top \bm{d}+
+                       \frac{\omega}{2t}\|\bm{d}\|_2^2.
+ \label{eq:comp-backtracking}
+\end{equation}
+A nonnegative remainder bound permits stable acceptance without subtracting nearly equal objective values. Write $d_{ij}=\bm{w}_{ij}^\top(\bm{y}-\bm{x})$ and let $m_{ij}$ be the minimum absolute residual difference along the segment from $r_{ij}(\bm{x})$ to $r_{ij}(\bm{y})$. Thus $m_{ij}=0$ when the segment crosses zero and otherwise equals the smaller endpoint magnitude. Taylor's formula gives
+\begin{equation}
+\begin{aligned}
+&f_h(\bm y)-f_h(\bm x)-\nabla f_h(\bm x)^\top(\bm y-\bm x)
+ \le\mathfrak B_h(\bm x,\bm y),\\
+&\mathfrak B_h(\bm x,\bm y)=
+ \frac1{2Nh}\sum_{i\ne j}\Delta_i\phi(m_{ij}/h)d_{ij}^2\\
+&\hspace{38mm}\le\frac{\mathscr B_h}{2}\|\bm y-\bm x\|_2^2.
+\end{aligned}
+\label{eq:comp-positive-certificate}
+\end{equation}
+The reference implementation accepts when $\mathfrak B_h(\bm{x},\bm{y})\le\omega\|\bm{y}-\bm{x}\|_2^2/(2t)$. This sufficient test passes for $t\le\omega/\mathscr B_h$ and can be evaluated in event-row blocks.
+
+Set $t_r=t$ and $\bm{x}^{(r+1)}=\bm{y}$. The cap $t_{\max}$ supplies a uniform step-size bound; $\zeta=\omega=1/2$ is one admissible numerical choice.
+
+\medskip
+\noindent\begin{minipage}{\textwidth}
+\small
+\hrule\vspace{5pt}
+\textbf{Algorithm 1. Fixed-target, partially penalized proximal gradient}\par
+\textit{Input:} $\bm Y,\bm\Delta,\widehat{\bm{W}},q$, fixed $h,\lambda>0$, finite $\bm{x}^{(0)}$, $t_{\max}>0$, and $\zeta,\omega\in(0,1)$.\par
+\textit{Preflight:} validate dimensions, scales, event coding, PCA rank, and the nuisance-direction diagnostic in Section~5.5. Return a distinct no-event status when the event set is empty.\par
+For $r=0,1,\ldots$: compute $f_h(\bm{x}^{(r)})$ and $\nabla f_h(\bm{x}^{(r)})$ by blocks; initialize $t=t_{\max}$; form~\eqref{eq:comp-prox} and backtrack until~\eqref{eq:comp-backtracking} is certified by~\eqref{eq:comp-positive-certificate}; accept the candidate; recompute its gradient and record the objective, step size, and full optimality residuals. Record the stopping status and full-coordinate residual.\par
+\textit{Output:} coefficients in the original scale, frozen prediction map, all tuning values, residuals, iteration and evaluation counts, and diagnostic status. Iteration and line-search limits retain separate status codes.\par
+\vspace{5pt}\hrule
+\end{minipage}
+\medskip
+
+\begin{theorem}[Convergence for a fixed, attained objective]
+\label{thm:comp-convergence}
+Suppose the finite-sample minimizer set $\mathcal S=\arg\min Q$ is nonempty. In exact arithmetic, Algorithm~1 accepts a step after finitely many backtracking trials. If $\mathscr B_h>0$, all accepted steps satisfy
+\begin{equation}
+ t_r\ge t_{\min}:=\min\{t_{\max},\zeta\omega/\mathscr B_h\}>0.
+ \label{eq:comp-tmin}
+\end{equation}
+When $\mathscr B_h=0$, set $t_{\min}=t_{\max}$. The sequence converges to a member of $\mathcal S$, and, for each $\bm{x}^\star\in\mathcal S$ and $r\ge1$,
+\begin{align}
+ Q(\bm{x}^{(r+1)})&\le Q(\bm{x}^{(r)})-
+      \frac{2-\omega}{2t_r}\|\bm{x}^{(r+1)}-\bm{x}^{(r)}\|_2^2,
+      \label{eq:comp-descent}\\
+ 0\le Q(\bm{x}^{(r)})-Q(\bm{x}^\star)&\le
+      \frac{\|\bm{x}^{(0)}-\bm{x}^\star\|_2^2}{2t_{\min}r}.
+      \label{eq:comp-rate}
+\end{align}
+No strong convexity or uniqueness of the minimizer is required.
+\end{theorem}
+For fixed $n,h,\lambda$, Theorem~\ref{thm:comp-convergence} gives an $O(r^{-1})$ objective-gap bound for Algorithm~1 in exact arithmetic. Appendix~\ref{app:computation} specializes standard proximal-gradient reasoning \citep{BeckTeboulle2009,ParikhBoyd2014} to the stated line search. Finite numerical stopping uses the residual below.
+
+\subsection{Optimality residuals and the finite-tolerance interface}
+\label{subsec:comp-stopping}
+For the Karush--Kuhn--Tucker (KKT) conditions, at a finite candidate $\bm{x}=(\bm{a}^\top,\bm{\beta}^\top)^\top$, let $\bm{g}=\nabla f_h(\bm{x})$ and define
+\begin{equation}
+ \begin{split}
+ \mathfrak r_{\rm KKT}(\bm{x})&=\max\{\|\bm{g}_a\|_\infty,\max_j\rho_j(\bm{x})\},\\
+ \rho_j(\bm{x})&=
+ \begin{cases}
+ |g_{\beta,j}+\lambda\operatorname{sign}(\beta_j)|,&\beta_j\ne0,\\
+ (|g_{\beta,j}|-\lambda)_+,&\beta_j=0.
+ \end{cases}
+ \end{split}
+ \label{eq:comp-kkt}
+\end{equation}
+A maximum over an empty block is zero. This equals $\inf\{\|\bm{s}\|_\infty:\bm{s}\in\partial Q(\bm{x})\}$, and is zero if and only if the finite vector $\bm{x}$ is a global minimizer. The proximal-gradient mapping
+\begin{equation}
+ G_t(\bm{x})=\{\bm{x}-T_t(\bm{x})\}/t
+ \label{eq:comp-mapping}
+\end{equation}
+provides a second, continuous fixed-point diagnostic, also zero exactly at a minimizer. At an accepted pair $(\bm{x},\bm{y})$, the explicit vector
+\begin{equation}
+ \begin{gathered}
+\bm{s}_y=G_t(\bm{x})+\nabla f_h(\bm{y})-\nabla f_h(\bm{x})\in\partial Q(\bm{y}),\\
+ \|\bm{s}_y\|_2\le(1+t\mathscr B_h)\|G_t(\bm{x})\|_2
+ \end{gathered}
+ \label{eq:comp-residual-vector}
+\end{equation}
+links the iteration to a subgradient residual. Equation~\eqref{eq:comp-kkt} uses the stored coefficient's exact zero/nonzero status.
+
+The implementation reports absolute residuals, the declared tolerance, and the normalized residual $\mathfrak r_{\rm KKT}/\max\{\lambda,\|\bm{g}\|_\infty\}$. Numerical stationarity and nuisance-direction geometry are assessed separately. Supplementary Appendix~\ref{app:implementation} specifies the tracked arithmetic-error budget and the distinction between this numerical diagnostic and an objective-gap certificate.
+
+\begin{corollary}[Finite optimization tolerance on the statistical event]
+\label{cor:comp-statistical-tolerance}
+Under the assumptions and tuning of the ordinary-model conditional theorem in Section~4, let $k=s+q$, $\bm{\vartheta}^\dagger=(\bm{\theta}_0^\top,(\widehat{\bm{B}}^\top\bm{\beta}_0)^\top,\bm{\beta}_0^\top)^\top$, and $R=8\sqrt{k}\lambda/\kappa$. On the same event used in that theorem, every finite $\widetilde{\bm{\vartheta}}$ satisfying
+\begin{equation}
+ \mathfrak r_{\rm KKT}(\widetilde{\bm{\vartheta}})\le\lambda/4
+ \label{eq:comp-statistical-tolerance}
+\end{equation}
+obeys
+\begin{equation}
+ \begin{gathered}
+\|\widetilde{\bm{\vartheta}}-\bm{\vartheta}^\dagger\|_2\le R,\\
+ \|\widetilde{\bm{\beta}}-\bm{\beta}_0\|_1\le4\sqrt{k}R.
+ \end{gathered}
+ \label{eq:comp-statistical-transfer}
+\end{equation}
+Thus the conditional probability is still at least $1-2\alpha$, under the same fixed-tuning hypotheses; no extra event is introduced by this deterministic implication.
+\end{corollary}
+A tilted sublevel argument transfers the Section~\ref{sec:theory} score and contrast bounds to finite candidates under the same fixed-tuning conditions. The experiments use a tighter numerical threshold of $10^{-7}$; outcome-based tuning follows the separate validation procedure of Section~\ref{subsec:tuning-interface}.
+
+\subsection{Unpenalized escape directions and finite existence}
+\label{subsec:comp-existence}
+Define the event-anchored nuisance differences $\bm{a}_{ij}=\widehat{\bm{A}}_i-\widehat{\bm{A}}_j$ and the flat-direction space
+\[
+ \mathcal N_A=\{\bm{v}\in\mathbb R^q:\bm{a}_{ij}^\top \bm{v}=0
+                         \text{ whenever }\Delta_i=1,\ j\ne i\}.
+\]
+A \emph{strict escape direction} is a vector $\bm{v}$ such that
+\begin{equation}
+ \begin{gathered}
+\bm{a}_{ij}^\top \bm{v}\le0\quad(\Delta_i=1,\ j\ne i),
+ \\
+ \bm{a}_{ij}^\top \bm{v}<0\quad\text{for at least one such pair}.
+ \end{gathered}
+ \label{eq:comp-escape}
+\end{equation}
+Strictness for just one pair suffices because $\ell_h'(r)>0$ at every finite $r$ when $h>0$.
+
+\begin{proposition}[An exact-arithmetic finite-existence criterion]
+\label{prop:comp-existence}
+For finite $\bm Y,\widehat{\bm{W}}$, $h,\lambda>0$, the set $\arg\min Q$ is nonempty if and only if no strict escape direction in~\eqref{eq:comp-escape} exists. If no such direction exists, every nonempty sublevel set is compact after projecting $\bm{a}$ onto $\mathcal N_A^\perp$. Directions in $\mathcal N_A$ leave the objective unchanged and need not imply nonexistence. When $q=0$, a finite minimum always exists.
+\end{proposition}
+Proposition~\ref{prop:comp-existence} characterizes finite attainment of the fixed criterion, including flat nuisance directions. The coefficient guarantees in Section~\ref{sec:theory} additionally impose restricted-design separation.
+
+If $m>0$, choose an event index $i_0$ and let $\mathcal E=\{i:\Delta_i=1\}$, $\mathcal C=\{j:\Delta_j=0\}$. The escape test can be expressed with $O(nq)$ coefficients rather than all pair differences: find $\bm{v}\in\mathbb R^q$ satisfying
+\begin{equation}
+ \begin{aligned}
+ (\widehat{\bm{A}}_i-\widehat{\bm{A}}_{i_0})^\top \bm{v}&=0&& (i\in\mathcal E),\\
+ (\widehat{\bm{A}}_j-\widehat{\bm{A}}_{i_0})^\top \bm{v}&\ge0&& (j\in\mathcal C),\\
+ \sum_{j\in\mathcal C}(\widehat{\bm{A}}_j-\widehat{\bm{A}}_{i_0})^\top \bm{v}&\ge1.&
+ \end{aligned}
+ \label{eq:comp-escape-lp}
+\end{equation}
+The last constraint fixes the scale of a positive strict margin. In exact arithmetic, feasibility is equivalent to~\eqref{eq:comp-escape}. Numerical output includes equality residuals, inequality margins, and an explicit inconclusive status when the margins cannot be resolved.
+
+For $m=0$, $Q=\lambda\|\bm{\beta}\|_1$ and every $\bm{a}$ with $\bm{\beta}=0$ is optimal, but the sample provides no event information. For $m=n$, strict escape is impossible because both directions of every comparison are present. Rank deficiency can still leave flat nuisance coordinates. These cases distinguish nonexistence, nonuniqueness, and lack of event information.
+
+\subsection{Regularization paths and stable arithmetic}
+\label{subsec:comp-paths}
+For fixed $(K,h)$, suppose $\bm{a}^{(0)}$ attains the minimum of $\bm{a}\mapsto f_h(\bm{a},0)$. The level
+\begin{equation}
+ \lambda_{\rm zero}=\|\nabla_\beta f_h(\bm{a}^{(0)},0)\|_\infty
+ \label{eq:comp-lambda-zero}
+\end{equation}
+makes $(\bm{a}^{(0)},0)$ a global minimizer for every $\lambda\ge\lambda_{\rm zero}$ by the full KKT conditions. The threshold is evaluated after checking nuisance-only stationarity. Penalty paths retain strictly positive levels and use the preceding successful fit as a warm start. This construction follows regularized AFT practice \citep{SuderMolstad2022}, with the null fit including the unpenalized block.
+
+For a very negative residual difference, evaluating $r\Phi(r/h)+h\phi(r/h)$ naively subtracts nearly equal quantities. A useful stable identity, with $z=|r|/h$, is
+\begin{equation}
+ \ell_h(r)=r_++h\phi(z)J(z),\qquad
+ J(z)=\int_0^\infty u\exp(-zu-u^2/2)\,\mathrm{d}u>0.
+ \label{eq:comp-stable-loss}
+\end{equation}
+For $z>0$, an alternating tail expansion is
+\begin{equation}
+ \begin{split}
+ J(z)&=\sum_{j=0}^{M-1}\frac{(-1)^j(2j+1)!!}{z^{2j+2}}+\mathcal E_M(z),\\
+ |\mathcal E_M(z)|&\le\frac{(2M+1)!!}{z^{2M+2}}.
+ \end{split}
+ \label{eq:comp-tail-expansion}
+\end{equation}
+Here $M$ is the expansion length. The implementation combines normal-tail routines, log-scale evaluation, and the explicit remainder bound. Numerical metadata track tail approximation, unresolved arithmetic, and the line-search budget; details appear in Supplementary Appendix~\ref{app:implementation}.
+
+Every candidate retains its declared objective, complete-coordinate stopping rule, and frozen prediction map. Output states distinguish stationarity to tolerance, iteration limits, numerical or line-search failures, nuisance escape, flat directions, and event-free samples.

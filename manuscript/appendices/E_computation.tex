@@ -1,0 +1,198 @@
+\section{Computational identities and convergence proofs}
+\label{app:computation}
+
+\subsection{Pairwise derivatives, Laplacian bound, and implicit products}
+\label{subapp:comp-derivatives}
+Let $\bm{w}_{ij}=\widehat{\bm{W}}_i-\widehat{\bm{W}}_j$. Since $\partial r_{ij}/\partial\bm{\vartheta}=\bm{w}_{ij}$, differentiation of a finite sum gives
+\[\begin{gathered}
+ \nabla f_h(\bm{\vartheta})=\frac1N\sum_{i\ne j}\Delta_i\Phi(r_{ij}/h)\bm{w}_{ij},\\
+ \nabla^2f_h(\bm{\vartheta})=\frac1{Nh}\sum_{i\ne j}\Delta_i\phi(r_{ij}/h)\bm{w}_{ij}\bm{w}_{ij}^\top.
+\end{gathered}\]
+Collecting the positive coefficient of row $i$ and the negative coefficient of column $i$ gives~\eqref{eq:comp-gradient}. Summing $c_i$ over $i$ gives zero. Blocking the row sum does not change any term. Only rows with $\Delta_i=1$ need to be evaluated, but each such row still includes all other patients.
+
+Combining the $(i,j)$ and $(j,i)$ outer products yields
+\[
+ \sum_{i\ne j}\Delta_i\bm{w}_{ij}\bm{w}_{ij}^\top
+ =\sum_{i<j}(\Delta_i+\Delta_j)\bm{w}_{ij}\bm{w}_{ij}^\top
+ =\widehat{\bm{W}}^\top\bm{\mathscr L}_\Delta\widehat{\bm{W}}.
+\]
+The diagonal of this Laplacian is $(n-2)\Delta_i+m$, and its off-diagonal entry is $-(\Delta_i+\Delta_j)$, proving~\eqref{eq:comp-lipschitz}. The bound $\phi\le1/\sqrt{2\pi}$ then proves~\eqref{eq:comp-hessian-bound}, with the Lipschitz property obtained by integrating the Hessian along the segment between two finite points. Centering removes both terms involving $\widehat{\bm{W}}^\top\mathbf 1_n$. The operator-norm bound follows from $0\preceq\operatorname{diag}(\bm\Delta)\preceq \bm{I}_n$. 
+
+For the positive line-search certificate, Taylor's integral remainder is
+\[\begin{aligned}
+&f_h(\bm y)-f_h(\bm x)-\nabla f_h(\bm x)^\top(\bm y-\bm x)\\
+&\quad=\frac1{Nh}\sum_{i\ne j}\Delta_i d_{ij}^2
+ \int_0^1(1-s)\phi\{(r_{ij}(\bm x)+s d_{ij})/h\}\,\mathrm{d}s.
+\end{aligned}\]
+The normal density decreases as its argument's absolute value increases. Its maximum on the segment is therefore $\phi(m_{ij}/h)$. Bounding the integral by half that maximum proves the first inequality in~\eqref{eq:comp-positive-certificate}; bounding it by $\phi(0)/2$ and using the Laplacian proves the second. Thus this alternative test also accepts every $t\le\omega/\mathscr B_h$, which is the only threshold property needed in the convergence proof.
+
+
+For completeness, Hessian-vector products can be computed without forming the Hessian. Let $t_i=\widehat{\bm{W}}_i^\top \bm{v}$ and, for $i\ne j$, define
+\[
+ R_{ij}=\frac{\Delta_i}{h}\phi(r_{ij}/h)(t_i-t_j),\qquad R_{ii}=0,
+ \qquad b_i=\sum_jR_{ij}-\sum_jR_{ji}.
+\]
+Then $\nabla^2 f_h(\bm{\vartheta})\bm{v}=\widehat{\bm{W}}^\top b/N$. This formula is useful for testing, although Algorithm~1 does not require a Hessian-vector product. Substituting $\widehat{\bm{U}}=\bm{X}_c-\widehat{\bm{F}}\widehat{\bm{B}}^\top$ proves both identities in~\eqref{eq:comp-implicit-W}.
+
+\subsection{Proximal optimality and the three-point inequality}
+\label{subapp:comp-threepoint}
+For $\bm{y}=T_t(\bm{x})$, strict convexity of the proximal quadratic ensures a unique candidate and gives
+\begin{equation}
+ (\bm{x}-\bm{y})/t-\nabla f_h(\bm{x})\in\partial g_\lambda(\bm{y}).
+ \label{eq:E-prox-subgradient}
+\end{equation}
+Separability produces the identity update on the unpenalized block and soft thresholding on the penalized block in~\eqref{eq:comp-prox}. For any finite $\bm{u}$, the subgradient inequality, convexity of $f_h$, and the accepted line search give
+\begin{align*}
+ Q(\bm{y})-Q(\bm{u})
+ &\le \nabla f_h(\bm{x})^\top(\bm{y}-\bm{u})
+       +\frac{\omega}{2t}\|\bm{y}-\bm{x}\|_2^2+g_\lambda(\bm{y})-g_\lambda(\bm{u})\\
+ &\le \frac{(\bm{x}-\bm{y})^\top(\bm{y}-\bm{u})}t
+       +\frac{\omega}{2t}\|\bm{y}-\bm{x}\|_2^2.
+\end{align*}
+Using $2(\bm{x}-\bm{y})^\top(\bm{y}-\bm{u})=\|\bm{x}-\bm{u}\|_2^2-\|\bm{y}-\bm{u}\|_2^2-\|\bm{y}-\bm{x}\|_2^2$ yields
+\begin{equation}
+ Q(\bm{y})-Q(\bm{u})\le
+ \frac{\|\bm{x}-\bm{u}\|_2^2-\|\bm{y}-\bm{u}\|_2^2}{2t}
+       -\frac{1-\omega}{2t}\|\bm{y}-\bm{x}\|_2^2.
+ \label{eq:E-threepoint}
+\end{equation}
+In particular, taking $\bm{u}=\bm{x}$ proves~\eqref{eq:comp-descent}, including its factor $2-\omega$. This uses exact minimization of the proximal surrogate, not merely comparison of that surrogate at $\bm{x}$ and $\bm{y}$.
+
+\subsection{Proof of Theorem~\ref{thm:comp-convergence}}
+\label{subapp:comp-convergence}
+The global smoothness bound gives
+\[
+ f_h(\bm{y})\le f_h(\bm{x})+\nabla f_h(\bm{x})^\top(\bm{y}-\bm{x})
+                          +\frac{\mathscr B_h}{2}\|\bm{y}-\bm{x}\|_2^2.
+\]
+Hence the line search must accept whenever $t\le\omega/\mathscr B_h$ if $\mathscr B_h>0$. Starting from $t_{\max}$ and multiplying by $\zeta$ therefore takes finitely many trials. If a reduction occurs before acceptance, the previously rejected step exceeds $\omega/\mathscr B_h$, proving the lower bound~\eqref{eq:comp-tmin}; acceptance at the first trial gives $t_r=t_{\max}$. If $\mathscr B_h=0$, the smooth objective is affine and the first trial is accepted. For this particular nonnegative pairwise loss it is constant, but affineness is already sufficient for acceptance.
+
+Fix $\bm{x}^\star\in\mathcal S$. Applying~\eqref{eq:E-threepoint} with $\bm{u}=\bm{x}^\star$ gives
+\begin{equation}
+ \begin{split}
+ 2t_r\{Q(\bm{x}^{(r+1)})-Q(\bm{x}^\star)\}
+ &\le\|\bm{x}^{(r)}-\bm{x}^\star\|_2^2-\|\bm{x}^{(r+1)}-\bm{x}^\star\|_2^2\\
+ &\hspace{8pt}-(1-\omega)\|\bm{x}^{(r+1)}-\bm{x}^{(r)}\|_2^2.
+ \end{split}
+ \label{eq:E-fejer}
+\end{equation}
+The left side is nonnegative, so distances to every minimizer are nonincreasing and the sequence is bounded. Summing this inequality for $r=0,\ldots,R-1$ and using monotonicity of $Q$ yields
+\[
+ 2Rt_{\min}\{Q(\bm{x}^{(R)})-Q(\bm{x}^\star)\}
+ \le\|\bm{x}^{(0)}-\bm{x}^\star\|_2^2,
+\]
+which proves~\eqref{eq:comp-rate}. Summing the descent inequality and using $t_r\le t_{\max}$ and $Q\ge0$ gives
+\[
+ \sum_{r=0}^\infty\|\bm{x}^{(r+1)}-\bm{x}^{(r)}\|_2^2<\infty.
+\]
+Since $t_r\ge t_{\min}>0$, $G_{t_r}(\bm{x}^{(r)})\to0$. By~\eqref{eq:E-prox-subgradient}, the vectors
+\[
+ s_{r+1}=G_{t_r}(\bm{x}^{(r)})+
+              \nabla f_h(\bm{x}^{(r+1)})-\nabla f_h(\bm{x}^{(r)})
+ \in\partial Q(\bm{x}^{(r+1)})
+\]
+converge to zero, using global Lipschitz continuity. A convergent subsequence exists by boundedness. If its limit is $\bar{\bm{x}}$, continuity of $Q$ and the subgradient inequality imply, for every finite $\bm{u}$,
+\[
+ Q(\bm{u})\ge Q(\bm{x}^{(r_j)})+s_{r_j}^\top(\bm{u}-\bm{x}^{(r_j)})\longrightarrow Q(\bar{\bm{x}}).
+\]
+Thus $\bar{\bm{x}}\in\mathcal S$. Distances to this particular minimizer are nonincreasing and have a subsequence tending to zero, so the whole sequence converges to $\bar{\bm{x}}$. 
+
+\subsection{Optimality residuals and proof of Corollary~\ref{cor:comp-statistical-tolerance}}
+\label{subapp:comp-tolerance}
+For a nonzero $\beta_j$, the $j$th subgradient coordinate is the singleton $g_{\beta,j}+\lambda\operatorname{sign}(\beta_j)$; for $\beta_j=0$, it is the interval $[g_{\beta,j}-\lambda,g_{\beta,j}+\lambda]$. The nuisance subgradient is always $\bm{g}_a$. Minimizing the absolute value coordinatewise proves~\eqref{eq:comp-kkt}, and the minimum is attained. Exact zero of this residual is equivalent to convex optimality. The fixed-point equivalence for $G_t$ follows from~\eqref{eq:E-prox-subgradient}. Adding $\nabla f_h(\bm{y})$ there proves membership in~\eqref{eq:comp-residual-vector}; its norm bound follows by the triangle inequality and $\|\bm{x}-\bm{y}\|_2=t\|G_t(\bm{x})\|_2$.
+
+We next make explicit the Section~4 event used for the finite-tolerance transfer. Put $t_\alpha=\{\log(2P/\alpha)/n\}^{1/2}$ and $\mu=2V_nL_\varepsilon h\sqrt{2/\pi}$. The tuning condition is $\lambda\ge4\mu+384V_nt_\alpha$. On the score event of that section, the slightly sharper bound
+\begin{equation}
+ \|\nabla f_h(\bm{\vartheta}^\dagger)\|_\infty
+ \le\mu+\sqrt8\,V_nt_\alpha\le\lambda/4
+ \label{eq:E-reference-score}
+\end{equation}
+therefore holds; the earlier proof only needed $\lambda/2$. On its contrast event and under its local curvature assumptions, every $\bm{u}\in\mathcal C(S)$ with $\|\bm{u}\|_2=R=8\sqrt{k}\lambda/\kappa$ satisfies
+\begin{equation}
+ \begin{split}
+ Q(\bm{\vartheta}^\dagger+\bm{u})-Q(\bm{\vartheta}^\dagger)
+ &\ge\frac\kappa2R^2-
+       (4\mu+384V_nt_\alpha+\lambda)\sqrt{k}R\\
+ &\ge\frac\kappa2R^2-2\lambda\sqrt{k}R
+   =2\lambda\sqrt{k}R.
+ \end{split}
+ \label{eq:E-sphere-barrier}
+\end{equation}
+This inequality holds on the cone sphere itself; a sublevel inequality is not required to derive the displayed lower bound. The empirical contrast is controlled uniformly on the radius-$4\sqrt{k}R$ $\ell_1$ ball. No stronger statistical event has been introduced.
+
+Choose $\bm{s}\in\partial Q(\widetilde{\bm{\vartheta}})$ with $\|s\|_\infty\le\varepsilon\le\lambda/4$, and let $\bm{v}=\widetilde{\bm{\vartheta}}-\bm{\vartheta}^\dagger$. Convexity at $\widetilde{\bm{\vartheta}}$ gives the tilted inequality
+\begin{equation}
+ Q(\widetilde{\bm{\vartheta}})-Q(\bm{\vartheta}^\dagger)
+ \le \bm{s}^\top \bm{v}\le\varepsilon\|\bm{v}\|_1.
+ \label{eq:E-tilted-sublevel}
+\end{equation}
+Convexity of $f_h$ at $\bm{\vartheta}^\dagger$ and the support of $\bm{\beta}_0$ also give
+\[
+ Q(\widetilde{\bm{\vartheta}})-Q(\bm{\vartheta}^\dagger)
+ \ge-\frac\lambda4\|\bm{v}\|_1+
+             \lambda\{\|(\bm{v}_\beta)_{S^c}\|_1-\|(\bm{v}_\beta)_S\|_1\}.
+\]
+Together with $\varepsilon\le\lambda/4$, this implies
+\[
+ \|(\bm{v}_\beta)_{S^c}\|_1\le3\|(\bm{v}_\beta)_S\|_1+\|\bm{v}_a\|_1,
+ \quad \bm{v}\in\mathcal C(S),\quad \|\bm{v}\|_1\le4\sqrt{k}\|\bm{v}\|_2.
+\]
+If $\|\bm{v}\|_2\ge R$, let $\bm{u}=R\bm{v}/\|\bm{v}\|_2$. Convexity on the segment and~\eqref{eq:E-tilted-sublevel} yield
+\[
+ Q(\bm{\vartheta}^\dagger+\bm{u})-Q(\bm{\vartheta}^\dagger)
+ \le\varepsilon\|\bm{u}\|_1\le\lambda\sqrt{k}R,
+\]
+contradicting~\eqref{eq:E-sphere-barrier}. Hence $\|\bm{v}\|_2\le R$ and $\|\bm{v}_\beta\|_1\le4\sqrt{k}R$. This is a pointwise deterministic implication on the original event, so it also applies to an outcome-dependent finite iterate satisfying the residual condition. The choices of $K,h,\lambda$ must still satisfy the original fixed-tuning conditions; outcome-dependent iteration stopping does not justify outcome-dependent tuning.
+
+\subsection{Proof of Proposition~\ref{prop:comp-existence} and the linear test}
+\label{subapp:comp-existence}
+Let $\mathcal P=\{(i,j):\Delta_i=1,\ j\ne i\}$. Suppose a strict escape vector $\bm{v}$ exists. For every finite $(\bm{a},\bm{\beta})$, the derivative of $Q(\bm{a}+t\bm{v},\bm{\beta})$ with respect to $t$ is
+\[
+ \frac1N\sum_{(i,j)\in\mathcal P}
+     \Phi\{r_{ij}(\bm{a}+t\bm{v},\bm{\beta})/h\}\,\bm{a}_{ij}^\top \bm{v}<0.
+\]
+Every summand is nonpositive and at least one is strictly negative, because the normal distribution function lies strictly between zero and one at a finite argument. The penalty does not change. Therefore no finite point is a minimizer.
+
+Conversely, assume no strict escape vector exists. If $\mathcal N_A^\perp$ has positive dimension, define
+\[
+ \chi=\min_{\substack{v\in\mathcal N_A^\perp\\\|v\|_2=1}}
+           \frac1N\sum_{(i,j)\in\mathcal P}(\bm{a}_{ij}^\top v)_+.
+\]
+The continuous function in this display is strictly positive on its compact domain. Indeed, a zero value would give $\bm{a}_{ij}^\top v\le0$ for all pairs. The absence of strict escape would then force all products to be zero, so $v\in\mathcal N_A$, a contradiction. Thus $\chi>0$.
+
+Project $\bm{a}$ onto $\mathcal N_A^\perp$, writing $\bm{a}_\perp$ for this component. All pair predictions, and hence $Q$, are unchanged. On a nonempty sublevel set $Q\le c$, nonnegativity of $\ell_h$ implies $\|\bm{\beta}\|_1\le c/\lambda$. Since $\ell_h(x+z)\ge(x+z)_+\ge x_+-|z|$,
+\[
+ f_h(\bm{a},\bm{\beta})\ge\chi\|\bm{a}_\perp\|_2-C_Y-C_U\|\bm{\beta}\|_1,
+\]
+where
+\[
+ C_Y=\frac1N\sum_{(i,j)\in\mathcal P}|Y_j-Y_i|,\qquad
+ C_U=\frac1N\sum_{(i,j)\in\mathcal P}\|\widehat u_i-\widehat u_j\|_\infty
+\]
+are finite. It follows that $\|\bm{a}_\perp\|_2\le(c+C_Y+C_Uc/\lambda)/\chi$. The projected sublevel set is closed and bounded, and thus compact. If $\mathcal N_A^\perp$ has dimension zero, $\bm{a}_\perp=0$ and only the already bounded $\bm{\beta}$ block remains. Minimizing on the sublevel set through the origin gives a global minimizer in both cases. This covers $q=0$ as well as an empty event-pair set. Flat directions may produce an unbounded set of equivalent minimizers in the original coordinates; they do not obstruct existence.
+
+For $m>0$, comparisons between two event patients are present in both directions. Condition~\eqref{eq:comp-escape} therefore forces their nuisance scores along $v$ to be equal. Choose an event anchor $i_0$. All remaining conditions say that censored scores are at least the event score, with at least one strict inequality. The sum of these nonnegative margins is strictly positive and can be scaled to at least one. This proves equivalence with~\eqref{eq:comp-escape-lp}. In the flat case all sample nuisance scores agree; since $\widehat{\bm{A}}$ is centered, that common score is zero. Thus, for $m>0$, $\mathcal N_A=\ker(\widehat{\bm{A}})$.
+
+Finite attainment and approximate stationarity are separated by the following example. Take $n=2$, nuisance rows $-1,1$, $\Delta=(1,0)^\top$, and no effective penalized predictor. The objective is $Q(a)=\ell_h(y-2a)/2$. It has no finite minimizer, but $|Q'(a)|=\Phi\{(y-2a)/h\}\to0$ as $a\to\infty$. Any positive gradient tolerance will eventually be met along this escaping sequence. This is why a small residual is not, by itself, evidence of finite attainment outside the statistical event of Section~4.
+
+\subsection{Null-fit threshold and stable tail formula}
+\label{subapp:comp-tail}
+If $\bm{a}^{(0)}$ is a finite nuisance-only minimizer, differentiability and convexity imply $\nabla_a f_h(\bm{a}^{(0)},0)=0$. The penalized-block KKT inequality is precisely $\|\nabla_\beta f_h(\bm{a}^{(0)},0)\|_\infty\le\lambda$. This proves~\eqref{eq:comp-lambda-zero}. An approximate nuisance-only fit supplies only approximate KKT conditions, which must be reported rather than treated as exact.
+
+For $z\ge0$, direct integration and the substitution $t=z+u$ give
+\[
+ \phi(z)-z\Phi(-z)=\int_z^\infty(t-z)\phi(t)\,\mathrm{d}t
+   =\phi(z)\int_0^\infty u\exp(-zu-u^2/2)\,\mathrm{d}u.
+\]
+Since $\ell_h(r)-r_+$ is even, this proves~\eqref{eq:comp-stable-loss}, including $J(0)=1$. If $z>0$, substituting $v=zu$ gives
+\[
+ J(z)=z^{-2}\int_0^\infty v \mathrm{e}^{-v}
+                          \exp\{-v^2/(2z^2)\}\,\mathrm{d}v.
+\]
+For $x\ge0$, Taylor's formula for $\mathrm{e}^{-x}$ after $M$ terms has remainder of sign $(-1)^M$ and magnitude at most $x^M/M!$. Integrating the finite expansion gives
+\[
+ z^{-2}\int_0^\infty v \mathrm{e}^{-v}\frac{(-1)^jv^{2j}}{2^j j!z^{2j}}\,\mathrm{d}v
+ =\frac{(-1)^j(2j+1)!}{2^j j!z^{2j+2}}
+ =\frac{(-1)^j(2j+1)!!}{z^{2j+2}}.
+\]
+The same bound on the integrated remainder proves~\eqref{eq:comp-tail-expansion}. The remainder has the sign of the next term, so adjacent truncations bracket the integral in exact arithmetic. The series is asymptotic, not generally convergent for a fixed finite $z$; a numerical implementation must stop according to a remainder bound before terms grow. Tail underflow, if encountered, must be distinguished from an exact zero of $\Phi$ or $\ell_h$ in the existence and convergence arguments.

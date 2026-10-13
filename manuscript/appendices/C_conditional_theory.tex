@@ -1,0 +1,197 @@
+\section{Proofs for the conditional theory}
+\label{app:conditional-proof}
+Throughout this appendix, $E_D$ and $\Pr_D$ denote expectation and probability conditional on $\mathcal \bm{D}_n$. The design, $\bm{\vartheta}^\dagger$, $h,\lambda$, and the approximation vector $\mathbf d$ are fixed. Independent ghost outcomes used below have each patient's own conditional law. The conditional laws are retained separately for each patient.
+
+\subsection{Event-weighted differences and the mean score}
+\label{subapp:score-proof}
+For each ordered pair let $Q_{ij}=R_j-R_i$, $\zeta_{ij}=d_i-d_j$, and $G_i(t)=G(t\mid \bm{D}_i)$. On an event observation $R_i=\varepsilon_i$. The conditional event subdensity is $f_\varepsilon(t)G_i(t)$, whereas the conditional survival function of $R_j$ is $S_\varepsilon(t)G_j(t)$. Consequently,
+\begin{equation}
+ A_{ij}:=E_D\{\Delta_i\mathbf1(Q_{ij}\ge0)\}
+  =\int f_\varepsilon(t)S_\varepsilon(t)G_i(t)G_j(t)\,\mathrm{d}t=A_{ji}.
+ \label{eq:C-score-centering}
+\end{equation}
+Since $\bm{w}_{ji}=-\bm{w}_{ij}$, $N^{-1}\sum_{i\ne j}A_{ij}\bm{w}_{ij}=0$. Centering follows from cancellation of the two ordered contributions within each pair.
+
+The finite event-weighted measure $\Pr_D(\Delta_i=1,Q_{ij}\in\mathrm{d}r)$ has density
+\begin{equation}
+ q_{ij}(r)=\int f_\varepsilon(z-r)G_i(z-r)\,\mathrm{d}F_{R_j\mid \bm{D}_j}(z)
+       \le L_\varepsilon\quad\text{a.e.}
+ \label{eq:C-event-density}
+\end{equation}
+The integral is Stieltjes and permits atoms in $R_j$. Restricting it to the event submeasure of patient $j$ gives, for $|r|\le A$,
+\begin{align}
+ q_{ij}(r)
+ &\ge\int f_\varepsilon(z-r)G_i(z-r)f_\varepsilon(z)G_j(z)\,\mathrm{d}z\notag\\
+ &\ge(2A-|r|)m_\varepsilon^2g_0^2\ge c_{\rm loc}.
+ \label{eq:C-density-lower}
+\end{align}
+The intersection of $I$ and $I+r$ has length $2A-|r|$; the location $t_\star$ disappears from the difference interval.
+
+For any real $\zeta$, splitting a shifted smoothed step from an unshifted step yields
+\begin{equation}
+ \int_{\mathbb R}\left|\Phi\{(r+\zeta)/h\}-\mathbf1(r\ge0)\right|\,\mathrm{d}r
+ \le |\zeta|+h\sqrt{2/\pi}.
+ \label{eq:C-shifted-step}
+\end{equation}
+This follows by adding and subtracting $\mathbf1(r+\zeta\ge0)$, integrating its shift over an interval of length $|\zeta|$, and applying the scalar smoothing integral from Section~3. The integrated shift bound is linear in $|\zeta|$ with a separate $O(h)$ smoothing term.
+
+Using~\eqref{eq:C-score-centering}--\eqref{eq:C-shifted-step}, $|\zeta_{ij}|\le2b$, and Cauchy--Schwarz,
+\begin{align*}
+ |(\bm{g}_h)_j|
+ &\le L_\varepsilon\{2b+h\sqrt{2/\pi}\}
+          \frac1N\sum_{i\ne l}|w_{il,j}|\\
+ &\le L_\varepsilon\{2b+h\sqrt{2/\pi}\}\sqrt{\widehat\Gamma_{jj}}
+ \le2V_nL_\varepsilon\{2b+h\sqrt{2/\pi}\}.
+\end{align*}
+Here $\widehat\Gamma_{jj}=2nV_{n,j}^2/(n-1)\le4V_n^2$, with $V_{n,j}=\|\widehat{\bm{W}}_{\cdot j}\|_2/\sqrt n$. This proves the mean-score assertion of Lemma~\ref{lem:conditional-process}. The same column argument gives $|L_{n,h}(\bm{\vartheta}^\dagger+\bm{v})-L_{n,h}(\bm{\vartheta}^\dagger)|\le2V_n\|\bm{v}\|_1$ and justifies conditional contrast integrability without an error moment.
+
+\subsection{A column-scale concentration bound for the gradient}
+\label{subapp:gradient-proof}
+Let $G_j$ be coordinate $j$ of $\nabla L_{n,h}(\bm{\vartheta}^\dagger)$. Replacing patient $i$'s outcome changes the $2(n-1)$ ordered terms involving that patient. Each scalar weight $\Delta_l\Phi(\cdot)$ lies in $[0,1]$. A valid bounded-difference constant is therefore
+\[
+ c_{ij}=\frac2N\sum_{l\ne i}|w_{il,j}|.
+\]
+By Cauchy--Schwarz and the pairwise variance identity,
+\begin{equation}
+ \sum_i c_{ij}^2
+ \le\frac{4(n-1)}{N^2}\sum_{i\ne l}w_{il,j}^2
+ =\frac4n\widehat\Gamma_{jj}\le\frac{16V_n^2}{n}.
+ \label{eq:C-gradient-differences}
+\end{equation}
+The two-sided bounded-difference inequality consequently gives
+\[
+ \Pr_D\{|G_j-E_DG_j|>t\}\le2\exp\{-nt^2/(8V_n^2)\}.
+\]
+A union bound over $P$ coordinates proves~\eqref{eq:score-deviation}. This calculation uses patients, not ordered pairs, as the independent units.
+
+\subsection{Pairing and moment contraction for the contrast process}
+\label{subapp:pair-process}
+For $i<j$ define the symmetric increment
+\begin{align}
+ H_{ij}(\bm{v})=\tfrac12\big[&\Delta_i\{\ell_h(r_{ij}^\dagger+\bm{w}_{ij}^\top \bm{v})-\ell_h(r_{ij}^\dagger)\}\notag\\
+ &+\Delta_j\{\ell_h(-r_{ij}^\dagger-\bm{w}_{ij}^\top \bm{v})-\ell_h(-r_{ij}^\dagger)\}\big],
+ \label{eq:C-symmetric-kernel}
+\end{align}
+where $r_{ij}^\dagger=Q_{ij}+\zeta_{ij}$. Extend $H_{ji}=H_{ij}$. For fixed outcomes, $H_{ij}(\bm{v})=g_{ij}(\bm{w}_{ij}^\top \bm{v})$ with $g_{ij}(0)=0$ and Lipschitz constant at most one. Moreover,
+\[
+ L_{n,h}(\bm{\vartheta}^\dagger+\bm{v})-L_{n,h}(\bm{\vartheta}^\dagger)
+  =\binom n2^{-1}\sum_{i<j}H_{ij}(\bm{v}).
+\]
+Let $m=\lfloor n/2\rfloor$ and let $\pi$ be uniform over permutations of the patient labels, independent of the outcomes. Write
+\[
+ U_\pi(\bm{v})=\frac1m\sum_{l=1}^m H_{\pi(2l-1),\pi(2l)}(\bm{v}).
+\]
+Every unordered pair is equally likely to appear among the $m$ pairs, so
+\begin{equation}
+ E_\pi U_\pi(\bm{v})=\binom n2^{-1}\sum_{i<j}H_{ij}(\bm{v}).
+ \label{eq:C-pairing-identity}
+\end{equation}
+This identity also holds for odd $n$, where one label is unused in each permutation. Conditional expectations must be averaged over $\pi$ as well: $E_\pi E_DU_\pi(\bm{v})=\mathcal R_h(\bm{v})$. This average retains the patient-specific conditional laws.
+
+Set $Z(r)=\sup_{\|\bm{v}\|_1\le r}|U(\bm{v})-E_DU(\bm{v})|$, where $U(\bm{v})$ is the left side of~\eqref{eq:C-pairing-identity}. For any moment order $a\ge1$, Jensen and Minkowski, followed by ghost-sample symmetrization of the independent pairs, give
+\begin{align}
+ \|Z(r)\|_{L^a(\bm{D})}
+ &\le E_\pi\left\|\sup_{\|\bm{v}\|_1\le r}|U_\pi(\bm{v})-E_DU_\pi(\bm{v})|\right\|_{L^a(\bm{D})}\notag\\
+ &\le\frac2m E_\pi\left\|\sup_{\|\bm{v}\|_1\le r}
+          \left|\sum_{l=1}^m\sigma_l H_{\pi(2l-1),\pi(2l)}(\bm{v})\right|
+                    \right\|_{L^a(\bm{D},\sigma)},
+ \label{eq:C-moment-symmetrization}
+\end{align}
+where the $\sigma_l$ are independent Rademacher signs. The maps $g_{ij}$ may depend on outcomes; after these outcomes are fixed, they are deterministic contractions independent of the signs. The absolute-value moment contraction principle \citep[Chapter~4]{LedouxTalagrand1991}, with the safe factor two, and $\ell_1/\ell_\infty$ duality yield
+\begin{equation}
+ \|Z(r)\|_{L^a(\bm{D})}
+ \le\frac{4r}{m}E_\pi
+ \left\|\left\|\sum_{l=1}^m\sigma_l \bm{w}_{\pi(2l-1),\pi(2l)}\right\|_\infty
+                                             \right\|_{L^a(\sigma)}.
+ \label{eq:C-moment-contraction}
+\end{equation}
+Suprema are measurable: the finite-dimensional closed $\ell_1$ ball is compact, and the functions are continuous in $\bm{v}$, so a fixed countable dense subset gives the same supremum.
+
+For every pairing and coordinate $j$,
+\begin{equation}
+ \sum_{l=1}^m w_{\pi(2l-1),\pi(2l),j}^{\,2}
+ \le2\sum_{i=1}^n\widehat W_{ij}^2\le2nV_n^2.
+ \label{eq:C-matching-column-bound}
+\end{equation}
+Consequently the maximum $T_\pi=\|\sum_l\sigma_l\bm{w}_{\pi(2l-1),\pi(2l)}\|_\infty$ obeys
+\[
+ \Pr_\sigma\{T_\pi>B\sqrt{2\log(2P)}+B\sqrt{2t}\}\le \mathrm{e}^{-t},
+ \qquad B=\sqrt{2n}\,V_n.
+\]
+Integration of this tail gives
+\begin{equation}
+ \|T_\pi\|_{L^a(\sigma)}
+ \le B\{\sqrt{2\log(2P)}+\sqrt{2a}\}
+ \le2B\sqrt{\log(2P)+a}.
+ \label{eq:C-rademacher-moment}
+\end{equation}
+For example, the positive part above the first threshold has $a$th moment at most $(\sqrt2 B)^a\Gamma(a/2+1)$; the elementary bound $\Gamma(a/2+1)^{1/a}\le\sqrt a$ for $a\ge1$ gives the displayed inequality.
+Since $m\ge n/3$ for $n\ge2$, equations~\eqref{eq:C-moment-contraction}--\eqref{eq:C-rademacher-moment} imply
+\begin{equation}
+ \|Z(r)\|_{L^a(\bm{D})}
+ \le24\sqrt2\,V_nr\sqrt{\{\log(2P)+a\}/n}.
+ \label{eq:C-process-moment}
+\end{equation}
+Take $a=\log(1/\alpha)>1$. Markov's inequality at $e\|Z(r)\|_{L^a(\bm{D})}$ gives failure probability at most $\mathrm{e}^{-a}=\alpha$. Because $24\sqrt2 e<96$, this proves~\eqref{eq:contrast-deviation}. The proof uses the standard pairing strategy for $U$-processes \citep{ClemencconEtAl2008}, but keeps conditional nonidentical laws and the column norm explicit. Bounding the supremum directly by the largest coordinate would lose this refinement.
+
+\subsection{Proof of Lemma~\ref{lem:conditional-curvature}}
+\label{subapp:curvature-proof}
+Differentiation of the conditional contrast is valid for fixed $h>0$: first and second derivatives of each loss increment are bounded by fixed multiples of $\|\bm{w}_{ij}\|$ and $\|\bm{w}_{ij}\|^2/h$. For any real shift $z$, the scalar second derivative is
+\begin{equation}
+ E_D\{\Delta_i\ell_h''(Q_{ij}+z)\}
+ =\int h^{-1}\phi\{(r+z)/h\}q_{ij}(r)\,\mathrm{d}r.
+ \label{eq:C-smoothed-curvature}
+\end{equation}
+If $|z|\le A/2$ and $h\le A/2$, the interval $[-z-h,-z+h]$ is contained in $[-A,A]$. Restricting the integral to that interval and using~\eqref{eq:C-density-lower} gives the lower bound $c_{\rm loc}\{2\Phi(1)-1\}=c_{\rm loc}c_\phi$.
+For $t\in[0,1]$ the shift along the parameter segment is
+\[
+ z=\zeta_{ij}+t \bm{w}_{ij}^\top \bm{v},
+ \qquad |z|\le2b+2M_n\|\bm{v}\|_1.
+\]
+Thus~\eqref{eq:local-radius-vector} keeps the entire segment in the above interval. Integrating the second derivative along this segment gives
+\[
+ \mathcal R_h(\bm{v})-\bm{g}_h^\top \bm{v}
+ \ge\frac{c_{\rm loc}c_\phi}{2N}\sum_{i\ne j}(\bm{w}_{ij}^\top \bm{v})^2.
+\]
+The conditional restricted-design inequality proves the result. The factor $c_\phi$ comes from retaining one bandwidth on each side of a kernel center; it is not an error-density assumption.
+
+\subsection{Localization, finite minimizers, and error bounds}
+\label{subapp:localization}
+We prove the general version with approximation bound $b$, which also proves the first part of Corollary~\ref{cor:augmented}. Put $\mu=\mu(b,h)$ and assume
+\[\begin{gathered}
+ \lambda\ge4\mu+384V_nt_\alpha,\\
+ R=8\sqrt{k}\lambda/\kappa,\\
+ h\le A/2,\\ 2b+8M_n\sqrt{k}R\le A/2.
+\end{gathered}\]
+Use Lemma~\ref{lem:conditional-process} with the fixed conditional radius $r=4\sqrt{k}R$. On the intersection of its two events,
+\[
+ \|\nabla L_{n,h}(\bm{\vartheta}^\dagger)\|_\infty
+ \le\mu+\sqrt8V_nt_\alpha\le\lambda/2.
+\]
+Suppose $\bm{v}$ satisfies $Q(\bm{\vartheta}^\dagger+\bm{v})\le Q(\bm{\vartheta}^\dagger)$. Convexity of $L_{n,h}$ and the support of $\bm{\beta}_0$ imply
+\begin{align*}
+ 0&\ge Q(\bm{\vartheta}^\dagger+\bm{v})-Q(\bm{\vartheta}^\dagger)\\
+  &\ge-\tfrac\lambda2\|\bm{v}\|_1
+          +\lambda\{\|(\bm{v}_\beta)_{S^c}\|_1-\|(\bm{v}_\beta)_S\|_1\}.
+\end{align*}
+Rearrangement proves~\eqref{eq:sharp-cone}, and therefore $\bm{v}\in\mathcal C(S)$ and $\|\bm{v}\|_1\le4\sqrt{k}\|\bm{v}\|_2$.
+
+Now assume additionally that $\|\bm{v}\|_2=R$. The local curvature condition holds, and the risk contrast, empirical contrast bound, and penalty inequality give
+\begin{align}
+ Q(\bm{\vartheta}^\dagger+\bm{v})-Q(\bm{\vartheta}^\dagger)
+ &\ge\tfrac\kappa2R^2-\mu\|\bm{v}\|_1-96V_nrt_\alpha
+                         -\lambda\|(\bm{v}_\beta)_S\|_1\notag\\
+ &\ge\tfrac\kappa2R^2
+             -\{4\mu+384V_nt_\alpha+\lambda\}\sqrt{k}R\notag\\
+ &\ge\tfrac\kappa2R^2-2\lambda\sqrt{k}R
+   =\tfrac\kappa4R^2>0.
+ \label{eq:C-sphere-separation}
+\end{align}
+This contradicts the assumed sublevel inequality. Thus no point in the sublevel set through $\bm{\vartheta}^\dagger$ lies on the sphere of radius $R$.
+
+If a point of that sublevel set were outside the ball, its line segment to $\bm{\vartheta}^\dagger$, by convexity of $Q$, would give a point on the excluded sphere. Hence the whole sublevel set is inside the ball. It is nonempty and closed, so it is compact. The continuous objective attains a minimum there, and every point outside the sublevel set has a strictly larger value than $Q(\bm{\vartheta}^\dagger)$. This minimum is therefore global. All global minimizers lie in that compact set and satisfy
+\[
+ \|\widehat{\bm{\vartheta}}-\bm{\vartheta}^\dagger\|_2\le R,\qquad
+ \|\widehat{\bm{\beta}}-\bm{\beta}_0\|_1\le4\sqrt{k}R.
+\]
+The set of minimizers is closed and compact as well. Its nonemptiness is proved rather than assumed. Substituting $R$ gives~\eqref{eq:conditional-error-bounds}; the event has conditional probability at least $1-2\alpha$. Setting $b=0$ proves Theorem~\ref{thm:conditional-ordinary}. Using the representation~\eqref{eq:extension-reference} proves the conditional extension.

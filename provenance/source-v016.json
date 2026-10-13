@@ -1,0 +1,236 @@
+{
+  "source_package": "AFT_Lifetime_Data_Analysis_v0_16",
+  "source_manifest_sha256": "7c8dc3cf920a106a1650077ef712065637c09d769d1c04206f3906db2d627210",
+  "copied_files": [
+    {
+      "path": "figures_source/cv_paths_local.pdf",
+      "sha256": "d3aaf68181fa96b2ca7472ab9d24da25666addbf803482fc8d3f0388ac3231c0"
+    },
+    {
+      "path": "figures_source/kkt_by_gradients.pdf",
+      "sha256": "e64028504da26980828bd8b1e0664ca6db8ae15b42af67c049fd8989f67fc8ab"
+    },
+    {
+      "path": "figures_source/kkt_by_updates.pdf",
+      "sha256": "3af4dcf4aac2027ee18006bc03dcad634aa404c8334afda69047754ca38b3653"
+    },
+    {
+      "path": "manuscript/ESM_1.pdf",
+      "sha256": "11418caf70ecabac72476a4077f5dde44b67763454ab424e99c745688ff2d453"
+    },
+    {
+      "path": "manuscript/appendices/A_identification.tex",
+      "sha256": "ee86e7e13229ee81a15c503bbb3fe38d56c8e4483f0f11a633472e4823b45133"
+    },
+    {
+      "path": "manuscript/appendices/B_method_properties.tex",
+      "sha256": "7d6adb30f4b3e7ec70029e0d029d1ac3c98423d106bcc41888cd0b34c36f07f8"
+    },
+    {
+      "path": "manuscript/appendices/C_conditional_theory.tex",
+      "sha256": "4aa6fcf9cb750ca5e9455c931903408ff6bd26c44c02b01a32ef71e9984ccb75"
+    },
+    {
+      "path": "manuscript/appendices/D_factor_design.tex",
+      "sha256": "b92f9f14401928795f5acab614fcf031fa179707ddd2f199fc2f77ec9430e09b"
+    },
+    {
+      "path": "manuscript/appendices/E_computation.tex",
+      "sha256": "3e929d0b060fa282f1fb96ce4fc7f5231fa24f883879e295049638f45e0083ff"
+    },
+    {
+      "path": "manuscript/appendices/F_reproducibility.tex",
+      "sha256": "7332f4740bdf8b9be759c1670e508143d5a5378476482f83b66a4aaa8e999c78"
+    },
+    {
+      "path": "manuscript/appendices/G_implementation.tex",
+      "sha256": "a86f50f835ab4caa7db9a37051907608b20f4c18604dcd282df499a2a56230f5"
+    },
+    {
+      "path": "manuscript/appendix_body.tex",
+      "sha256": "51a44e61fbeb3afc428adf228000f880d8fd9bdf0220d6f29881c49efa6c1f44"
+    },
+    {
+      "path": "manuscript/authors.tex",
+      "sha256": "e340388a72da8827c96e1de9c41179a0c82fed9d59d6ae38c299f61d926443ca"
+    },
+    {
+      "path": "manuscript/bibliography.tex",
+      "sha256": "7e9f5176b817f3afdbbbb3f0988466d54fb22f9e5edf5810c3b21765520d098d"
+    },
+    {
+      "path": "manuscript/bibliography_supplement.tex",
+      "sha256": "b21d5a599ed1eb68eb1c110a288a09c88a3f70b8b63d68031b645f9b7a7f5085"
+    },
+    {
+      "path": "manuscript/body.tex",
+      "sha256": "a023eedae33b274ba9e7fa36fcf941c90d51aac5aa90bf6dca4c3bca63dff529"
+    },
+    {
+      "path": "manuscript/complete.pdf",
+      "sha256": "e7b9d1d93b51074e0099c303a29329befe3c5d8de1e9bde01f348e39c9a84635"
+    },
+    {
+      "path": "manuscript/complete.tex",
+      "sha256": "e6c593513e1b39d6abf300cf3fb924f41b78ac1522549b56a372d077dc3ce5c2"
+    },
+    {
+      "path": "manuscript/export_crossrefs.py",
+      "sha256": "828552eb8468f8535f8012c5d3d4a980d6d7e8e341db5762308e3fbc3f291857"
+    },
+    {
+      "path": "manuscript/figures/Fig1.eps",
+      "sha256": "a9be4da1ab999c4511c591f692bce85b5ed09ea48f7a14b54e03aefca9fa18a7"
+    },
+    {
+      "path": "manuscript/figures/Fig1.pdf",
+      "sha256": "4b6d387862dc99c572421c5a0cf9150585ab2411630a2d19d4e5ca3f9fd25571"
+    },
+    {
+      "path": "manuscript/figures/Fig2.eps",
+      "sha256": "6c2f57fdab4c0d0f6ec85d3f7ee1a32a1d82378076cd5c6475f7223218c2edae"
+    },
+    {
+      "path": "manuscript/figures/Fig2.pdf",
+      "sha256": "aec8ef1af2b8490916b1a85af3dc2307d064728a44b9e404518209a40745252a"
+    },
+    {
+      "path": "manuscript/figures/FigS1.eps",
+      "sha256": "75cff92efbb88550f9327253f885d3638eb6a816a65168c6bc4da5ab18954a11"
+    },
+    {
+      "path": "manuscript/figures/FigS1.pdf",
+      "sha256": "2b7265bf04050b4b10defca0073cebb96ac35f08fef162684faf5bc76430cb59"
+    },
+    {
+      "path": "manuscript/lda-review12.sty",
+      "sha256": "529a2eec866a5ddf60764e646dffa72dbd610de9050cb05077ad9cf751b7e58c"
+    },
+    {
+      "path": "manuscript/main.pdf",
+      "sha256": "e2b02c0d51dbcb199daa823e582166102c3d07cd05a55dbc22cc3778257f1235"
+    },
+    {
+      "path": "manuscript/main.tex",
+      "sha256": "19851c8daf964fc3d2459b32ffad3c2f9a6b2f1680214e37ef2ab247dc73c107"
+    },
+    {
+      "path": "manuscript/preamble.tex",
+      "sha256": "d1d578dc0ce10b357bab60ee47f49c260e86627f3fd1e65ee5b68a76bac46c33"
+    },
+    {
+      "path": "manuscript/references.bib",
+      "sha256": "b81e2a06c8d27f605b718cc181e1ca3f6da9e068f841e2ca41497a1e5322c828"
+    },
+    {
+      "path": "manuscript/references_frozen.bbl",
+      "sha256": "ed0d9167706102475b8d13b40e9edfa20285c3964339ee40b084319aa0a42e5e"
+    },
+    {
+      "path": "manuscript/references_supplement.bbl",
+      "sha256": "b6ade0bc4b55b98187e6b746b00765d4e7d05394b350cbc9b913187562e28c57"
+    },
+    {
+      "path": "manuscript/sections/00_abstract.tex",
+      "sha256": "f5effe0750a3614dad01559bf847ff7b587c82520da531240bf47cbf64803963"
+    },
+    {
+      "path": "manuscript/sections/01_introduction.tex",
+      "sha256": "3e118183f647130610e5dd139ba1676f2ef4220c3c8ddff1241ffad7df700ee7"
+    },
+    {
+      "path": "manuscript/sections/02_model.tex",
+      "sha256": "3773b1e296b4f8605b80ddc6ba1e8d1a6a035f3be65d0bf38a189523d2b71118"
+    },
+    {
+      "path": "manuscript/sections/03_estimation.tex",
+      "sha256": "b423c01d3ba5263b6ecc373a1c7b6f80ed8a5d096887c5d94685bb67a64d35c2"
+    },
+    {
+      "path": "manuscript/sections/04_theory.tex",
+      "sha256": "7757ba6eb115db393e39a4b43fad0e586682b4e0da480899dbf1cc6fc94a499e"
+    },
+    {
+      "path": "manuscript/sections/05_acceleration_refinement.tex",
+      "sha256": "83ce5b00e4cb39cc5b5b3431e9ac65ed2e660e3b5f0319a51574f5698d20c95e"
+    },
+    {
+      "path": "manuscript/sections/05_computation.tex",
+      "sha256": "91bbbe79b8c151db6595f446f50894331c02fb0b19bb17b52c2adb2cbea405ad"
+    },
+    {
+      "path": "manuscript/sections/06_numerical_studies.tex",
+      "sha256": "6c0fc7de1ea5e6fda0ed9969dc822a8d241d4327404fb36b9f60740ba79a54cb"
+    },
+    {
+      "path": "manuscript/sections/07_discussion.tex",
+      "sha256": "ac866736fa46b51e40a2d58a0317212f1809f109945ceb28df865af2071e8767"
+    },
+    {
+      "path": "manuscript/statements.tex",
+      "sha256": "bac03fc8c7ae1d6c6d5b80fd00736d5b40bab0ea55932b9e3ac5c627bbe2c1b9"
+    },
+    {
+      "path": "manuscript/supplement.tex",
+      "sha256": "34ad26219c4e05dcba5fa5171f3399de9af3cccb937f9291f6940ab71a853456"
+    },
+    {
+      "path": "manuscript/svglov3.clo",
+      "sha256": "9cb866650d5eb6cf370e574e550d7f663a9a5a5d6d9966565fdafc294ca6de63"
+    },
+    {
+      "path": "manuscript/svjour3.cls",
+      "sha256": "83bcf456c8e22b982207d60273b7a70220a33d4f90f521f81ffaee1f64022853"
+    },
+    {
+      "path": "manuscript/tables/curvature.tex",
+      "sha256": "47f0c47baa50b0b1891087f0fa557a6c468e509fa89cc102a9126acbb3a6b4ab"
+    },
+    {
+      "path": "manuscript/tables/cv_selection.tex",
+      "sha256": "b094cffcdf8f57d9e388f5a9d058129b9b0b0dd8cba977cb70f130be4d0a828d"
+    },
+    {
+      "path": "manuscript/tables/model_summary.tex",
+      "sha256": "97cb06ad18ee34019512d099b39d48d001cf4478ec10f1c47fa44b37ebb81b84"
+    },
+    {
+      "path": "manuscript/tables/polish.tex",
+      "sha256": "6f96c3b8dcdcabae4993b4ff9292480a41b68b9533149b84a366116e898d2b73"
+    },
+    {
+      "path": "manuscript/tables/scenarios.tex",
+      "sha256": "05890141d9aaac6f75d10abf5e3039b84d871831003da565e2b824c3d6617f40"
+    },
+    {
+      "path": "manuscript/title.tex",
+      "sha256": "cf1148cecce17b04ae96a4687ceb4a730c1adee5daee2bc32bcc4b6f02a8c796"
+    },
+    {
+      "path": "manuscript/xrefs_main.aux",
+      "sha256": "4e27bd3a9e74945bfc00fdf829ab62be1f9096c7418ab71c7975a97a874a4027"
+    },
+    {
+      "path": "manuscript/xrefs_supplement.aux",
+      "sha256": "d9757400b0fb04e59b83139bd8c966b5d3057661d2526a6dec1f5fb87fbe290e"
+    },
+    {
+      "path": "scripts/format_references.py",
+      "sha256": "bbd2f60c0d73b8950992f0e77efed70d227c840978dde43303128b9275b2d07f"
+    },
+    {
+      "path": "scripts/reformat_existing_figures.py",
+      "sha256": "c3d81a337c0e97e45ea9b9fc95d840e23dd4bafb4d7be39fd987e99a43f6e6b0"
+    },
+    {
+      "path": "template_provenance/README.md",
+      "sha256": "06e6201f6b3f4b3f25e2fe87e63c5932987a8271fefd628730e2cb0c0ed9d8f7"
+    }
+  ],
+  "original_source_unchanged": true,
+  "repository_adaptations": [
+    "Public build excludes private TitlePage and submission forms.",
+    "Repository check replaces submission-specific author-clearance preflight."
+  ],
+  "scope": "Manuscript review and compilation; no fitted objects or research optimizer execution."
+}

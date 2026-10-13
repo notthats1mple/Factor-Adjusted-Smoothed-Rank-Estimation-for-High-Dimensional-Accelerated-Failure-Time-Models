@@ -1,0 +1,28 @@
+name: Peer review comment
+description: Report a mathematical, numerical, or reproducibility question.
+title: "[Review] "
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Manuscript location
+      description: Version, document, section, theorem, equation, figure, or table.
+    validations:
+      required: true
+  - type: textarea
+    id: observation
+    attributes:
+      label: Observation or question
+      description: State the issue and the assumptions or evidence relevant to it.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested correction or verification
+      description: Include a derivation or minimal reproducer where useful.
+  - type: input
+    id: environment
+    attributes:
+      label: Build environment, if relevant
+      description: Operating system, TeX and Python versions.

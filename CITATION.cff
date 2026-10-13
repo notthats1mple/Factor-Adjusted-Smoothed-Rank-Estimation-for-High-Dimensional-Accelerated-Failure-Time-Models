@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "Please cite the unpublished manuscript in preferred-citation when referring to this work."
+title: "Factor-Adjusted Smoothed Rank Estimation for High-Dimensional Accelerated Failure Time Models"
+version: "0.16"
+url: "https://github.com/notthats1mple/Factor-Adjusted-Smoothed-Rank-Estimation-for-High-Dimensional-Accelerated-Failure-Time-Models"
+authors:
+  - family-names: "ZHU"
+    given-names: "Weineng"
+    orcid: "https://orcid.org/0009-0009-2310-552X"
+    affiliation: "Department of Biostatistics, City University of Hong Kong, Hong Kong SAR, China"
+  - family-names: "JU"
+    given-names: "Yang"
+    orcid: "https://orcid.org/0009-0005-7285-3373"
+    affiliation: "Department of Biostatistics, City University of Hong Kong, Hong Kong SAR, China"
+preferred-citation:
+  type: unpublished
+  title: "Factor-Adjusted Smoothed Rank Estimation for High-Dimensional Accelerated Failure Time Models"
+  version: "0.16"
+  url: "https://github.com/notthats1mple/Factor-Adjusted-Smoothed-Rank-Estimation-for-High-Dimensional-Accelerated-Failure-Time-Models"
+  authors:
+    - family-names: "ZHU"
+      given-names: "Weineng"
+      orcid: "https://orcid.org/0009-0009-2310-552X"
+    - family-names: "JU"
+      given-names: "Yang"
+      orcid: "https://orcid.org/0009-0005-7285-3373"

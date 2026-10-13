@@ -1,0 +1,84 @@
+\section{Deterministic properties of the estimator}
+\label{app:method-properties}
+
+\subsection{Proof of Proposition~\ref{prop:smoothing-approximation}}
+\label{subapp:smoothing}
+Direct integration of $E(r+hV)_+$ gives~\eqref{eq:smoothed-gehan}. Jensen's inequality yields $\ell_h(r)\ge r_+$. For $r\ge0$, the approximation gap $g_h(r)=\ell_h(r)-r$ has derivative $\Phi(r/h)-1\le0$. The identity $\ell_h(-r)=\ell_h(r)-r$ shows that the gap is even. Its maximum is therefore attained at zero and equals $h\phi(0)=h/\sqrt{2\pi}$. This proves the first inequality in~\eqref{eq:smoothing-bounds} without any assumption on observed outcomes.
+
+Symmetry and Fubini's theorem give
+\[\begin{aligned}
+\int_{\mathbb R}|\Phi(r/h)-\mathbf1\{r\ge0\}|\,\mathrm{d}r
+ &=2h\int_0^\infty\{1-\Phi(t)\}\,\mathrm{d}t\\
+ &=2hE(V_+)=h\sqrt{2/\pi}.
+\end{aligned}\]
+The value of the indicator at zero is irrelevant to this integral. Summing the uniform scalar bound uses
+\[
+ \frac1{n(n-1)}\sum_{i\ne j}\Delta_i
+ =\frac1n\sum_i\Delta_i=\bar\Delta,
+\]
+which proves~\eqref{eq:uniform-loss-bound}. Including diagonal terms would add the parameter-independent quantity $n^{-2}h\phi(0)\sum_i\Delta_i$ if the $n^{-2}$ normalization were used, so the stated off-diagonal convention must be retained when comparing objective values.
+
+Differentiating the finite sum gives~\eqref{eq:loss-derivatives}, whose Hessian is positive semidefinite. Grouping the coefficients of each $\widehat{\bm{W}}_i$ proves~\eqref{eq:matrix-gradient}; convex subgradient optimality gives~\eqref{eq:kkt-interface}. Differentiation applies directly to the finite empirical sum. Dense gradient evaluation costs $O(nP+n^2)$ arithmetic; pair weights may be blocked to avoid an $N\times P$ matrix.
+
+\subsection{Proof of Proposition~\ref{prop:reference-representation} and coordinate identities}
+\label{subapp:reference}
+The PCA equations imply
+\[
+ \bm{X}_c\bm{X}_c^\top\widehat{\bm{F}}/n=\widehat{\bm{F}}\widehat{\bm{\Lambda}},
+ \quad
+ \widehat{\bm{B}}^\top\widehat{\bm{B}}
+ =\widehat{\bm{F}}^\top \bm{X}_c\bm{X}_c^\top\widehat{\bm{F}}/n^2
+ =\widehat{\bm{\Lambda}}.
+\]
+Since $\bm{X}_c\bm{X}_c^\top\mathbf 1_n=0$, selected positive-eigenvalue eigenvectors are centered. The definitions then give $\bm{J}\widehat{\bm{U}}=\widehat{\bm{U}}$, $\widehat{\bm{F}}^\top\widehat{\bm{U}}=0$, and $\bm{X}_c\widehat{\bm{B}}=\widehat{\bm{F}}\widehat{\bm{\Lambda}}$, proving~\eqref{eq:pca-identities}.
+
+Substituting~\eqref{eq:reference-parameter} into the fitted predictor yields
+\begin{align*}
+ \widehat{\bm{W}}\bm{\vartheta}^\dagger
+ &=\bm{Z}_c\bm{\theta}_0+\widehat{\bm{U}}\bm{\beta}_0+
+       \widehat{\bm{F}}(\widehat{\bm{B}}^\top\bm{\beta}_0+\bm{H}^{-T}\bm{\xi}_0)\\
+ &=\bm{Z}_c\bm{\theta}_0+\bm{X}_c\bm{\beta}_0+
+       (\bm{F}_c\bm{H}^\top+\bm{E}_F)\bm{H}^{-T}\bm{\xi}_0\\
+ &=\bm{\eta}_c^0+\bm{E}_F\bm{H}^{-T}\bm{\xi}_0.
+\end{align*}
+Since $\bm{J}\bm{E}_F=\bm{E}_F$, $\mathbf d$ is centered. Subtracting from $Y_i=R_i+\eta_i^0$ gives the residual identities; rowwise Cauchy--Schwarz bounds $b_n$. Adding and subtracting the reference predictor gives the last decomposition. When $\bm{\xi}_0=0$, the approximation term vanishes without any factor-accuracy assumption.
+
+For orthogonal $Q$, rotating $\widehat{\bm{F}}$ and $\widehat{\bm{B}}$ to $\widehat{\bm{F}}\bm{Q}^\top$ and $\widehat{\bm{B}}\bm{Q}^\top$ preserves $\widehat{\bm{U}}$; taking $\bm{\gamma}^*=\bm{Q}\bm{\gamma}$ preserves the objective. Writing the prediction map as $(\widehat{\bm{B}}^\top\widehat{\bm{B}})^{-1}\widehat{\bm{B}}^\top \bm{x}_c$ shows that it rotates to $Q\widehat{\bm{f}}(\bm{x})$ and preserves the deployed score, even outside the diagonal PCA eigenbasis.
+
+For a training row $\bm{x}_{c,i}^\top$, the identity $\bm{X}_c\widehat{\bm{B}}=\widehat{\bm{F}}\widehat{\bm{\Lambda}}$ gives $\widehat{\bm{\Lambda}}^{-1}\widehat{\bm{B}}^\top \bm{x}_{c,i}=\widehat{\bm{f}}_i$. The residual mapping therefore reproduces $\widehat{\bm{u}}_i$. Finally,
+\[
+ \widehat{\bm{u}}(\bm{x})^\top\widehat{\bm{\beta}}+
+ \widehat{\bm{f}}(\bm{x})^\top\widehat{\bm{\gamma}}
+ =\bm{x}_c^\top\widehat{\bm{\beta}}+
+ \bm{x}_c^\top\widehat{\bm{B}}\widehat{\bm{\Lambda}}^{-1}
+          (\widehat{\bm{\gamma}}-\widehat{\bm{B}}^\top\widehat{\bm{\beta}}),
+\]
+which proves~\eqref{eq:prediction-coefficients}. This proves exact reproduction of the fitted training factors, residuals, and scores.
+
+\subsection{Finite attainment and a boundary example}
+\label{subapp:existence}
+Assume $q>0$, $h>0$, $\lambda>0$, finite observations, and~\eqref{eq:sample-no-separation}. On a nonempty sublevel set $Q_{n,h,\lambda}(\bm{a},\bm{\beta})\le c$, nonnegativity of $\ell_h$ gives $\|\bm{\beta}\|_1\le c/\lambda$. Write
+\[
+ t_{ij}=(\widehat{\bm{A}}_i-\widehat{\bm{A}}_j)^\top \bm{a},\qquad
+ z_{ij}=Y_j-Y_i+(\widehat{\bm{u}}_i-\widehat{\bm{u}}_j)^\top\bm{\beta}.
+\]
+The inequalities $\ell_h(t+z)\ge(t+z)_+\ge t_+-|z|$ imply
+\[
+ L_{n,h}(\bm{a},\bm{\beta})
+ \ge \chi_n\|\bm{a}\|_2-C_Y-C_U\|\bm{\beta}\|_1,
+\]
+where the finite sample constants can be taken as
+\[
+ C_Y=N^{-1}\sum_{i\ne j}\Delta_i|Y_j-Y_i|,
+ \qquad
+ C_U=N^{-1}\sum_{i\ne j}\Delta_i\|\widehat{\bm{u}}_i-\widehat{\bm{u}}_j\|_\infty.
+\]
+Therefore $\|\bm{a}\|_2\le\{c+C_Y+C_Uc/\lambda\}/\chi_n$ on the sublevel set. It is closed and bounded and hence compact. Taking $c=Q_{n,h,\lambda}(0,0)$ gives a nonempty compact set containing at least one global minimum; the minimizer set is itself compact. If $q=0$, the penalty directly bounds all coordinates and the same conclusion follows without $\chi_n$.
+
+The sum defining $\chi_n$ is nonnegative and continuous on the unit sphere. Thus $\chi_n>0$ precisely when every nonzero nuisance direction admits a positive event-anchored comparison. The condition concerns the realized event-anchored nuisance design.
+
+For an example of nonattainment, take $n=2$, $K=0$, one centered unpenalized covariate with rows $-1$ and $1$, no effective molecular contribution, and $\Delta_1=1$, $\Delta_2=0$. With scalar coefficient $a$ and $y=Y_2-Y_1$, the objective reduces to
+\[
+ Q(a)=\tfrac12\ell_h(y-2a).
+\]
+It is positive for every finite $a$, but tends to zero as $a\to\infty$. Thus its infimum is not attained. This remains a valid finite-sample failure mechanism when molecular coefficients are available but optimally zero. Conversely, failure of~\eqref{eq:sample-no-separation} need not imply nonexistence: if all $\Delta_i=0$, any unpenalized $a$ with $\bm{\beta}=0$ is a minimizer, although no slope is learned. Existence, uniqueness, and information for estimation are different requirements.

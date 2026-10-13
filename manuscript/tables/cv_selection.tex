@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering\small
+\caption{Training-only penalty selections and full-training refit residuals. A star denotes the upper grid boundary}
+\label{tab:cv-selection}
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+ & \multicolumn{3}{c}{FA} & \multicolumn{3}{c}{UA} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Scenario & Eligible & $\lambda$ & KKT + budget & Eligible & $\lambda$ & KKT + budget \\
+\midrule
+S1 & 4/4 & $0.06$ & $9.825\times10^{-8}$ & 4/4 & $0.06$ & $7.786\times10^{-8}$ \\
+S2 & 4/4 & $0.06$ & $9.600\times10^{-8}$ & 4/4 & $0.06$ & $8.981\times10^{-8}$ \\
+S3 & 4/4 & $0.06$ & $9.886\times10^{-8}$ & 4/4 & $0.06$ & $9.950\times10^{-8}$ \\
+S4 & 4/4 & $0.15^{*}$ & $9.323\times10^{-10}$ & 3/4 & $0.06$ & $9.870\times10^{-8}$ \\
+S5 & 4/4 & $0.06$ & $9.503\times10^{-10}$ & 4/4 & $0.025$ & $9.925\times10^{-8}$ \\
+S6 & 4/4 & $0.15^{*}$ & $7.446\times10^{-10}$ & 4/4 & $0.15^{*}$ & $9.298\times10^{-8}$ \\
+\bottomrule
+\end{tabular}
+\end{table}

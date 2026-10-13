@@ -1,0 +1,16 @@
+\section{Implementation conventions and numerical diagnostics}
+\label{app:implementation}
+\paragraph{Objective and coordinates.}
+The implementation retains ordered off-diagonal pairs, event weights $\Delta_i$, residual direction $e_j-e_i$, and normalization $n(n-1)$. Censored patients remain comparison subjects. Clinical and factor coefficients are unpenalized; molecular coefficients use the declared $\ell_1$ penalty and original coordinate scales. For rescaled coordinates, Section~\ref{subsec:pca-estimator} gives the equivalent weighted penalty. Covariate means and the PCA map are learned within training data and frozen for validation. The recorded observation model determines the treatment of rounded times and ties.
+
+\paragraph{Finite attainment and stationarity.}
+The complete KKT residual uses every nuisance and molecular coordinate and the exact zero/nonzero status of the stored coefficients. The nuisance-direction diagnostic is recorded separately from stationarity. Exact zero of the complete residual characterizes a finite minimizer of the convex criterion. A positive-tolerance numerical result is reported as stationarity to the declared tolerance; the archived output retains \texttt{global\_optimum\_certified=FALSE}.
+
+\paragraph{Tracked arithmetic budget.}
+The numerical allowance $E$ tracks known tail and underflow contributions using normal-tail bounds and log-scale calculations. It is combined with the computed residual for numerical acceptance. It is not a complete interval enclosure of every floating-point operation. Nonfinite predictors, gradients, or losses and unresolved line searches receive distinct status codes. The expansion in~\eqref{eq:comp-tail-expansion} is truncated using its remainder bound before asymptotic terms grow. A positive quantity below representable range retains its logarithmic bound rather than being interpreted as a mathematical zero.
+
+\paragraph{Stable validation contrasts.}
+Validation computes the positive-part difference within each ordered pair before aggregation. With $a=Y_j-Y_i$ and $b=\widehat\eta_i-\widehat\eta_j$, this is $(a+b)_+-a_+$. Sign-based evaluation returns $b$ when both positive parts are active, avoiding cancellation of two large totals. The bound $|(a+b)_+-a_+|\le |b|$ provides a deterministic arithmetic check. Comparisons are formed within each validation fold, and the denominator is the sum of its ordered-pair counts.
+
+\paragraph{Paths, refinement, and candidate eligibility.}
+The null-fit threshold is evaluated after nuisance-only fitting and a complete-design gradient calculation, with the numerical budget propagated to its reported status. Penalty levels remain strictly positive. Warm starts advance from the last successful candidate. Active-face refinement retains the input support and signs, directly solves a numerically positive-definite Hessian system, and verifies all inactive-coordinate inequalities at the accepted point. The procedure in Section~\ref{subsec:training-solver-policy} fixes the trigger and update budget. An invalid fold makes the corresponding aggregate unavailable; all candidate positions, grid boundaries, and status reasons remain in the record.

@@ -1,0 +1,66 @@
+\subsection{Accelerated proximal iterations}
+\label{subsec:accelerated-implementation}
+The numerical studies use the non-restarted backtracking fast iterative shrinkage-thresholding algorithm (FISTA) \citep{BeckTeboulle2009}. Let $\bm{x}^0=\bm{y}^0$ and $\tau_0=1$. At iteration $r$, the smooth gradient is evaluated at the extrapolated point $\bm{y}^r$. Starting from the previous accepted inverse step $L_{r-1}$, increase $L_r$ geometrically until the partially penalized candidate
+\begin{equation}
+ \begin{aligned}
+ \bm{x}^{r+1}_a&=\bm{y}^r_a-L_r^{-1}\nabla_a f_h(\bm{y}^r),\\
+ \bm{x}^{r+1}_\beta&=\mathsf S_{\lambda/L_r}
+       \{\bm{y}^r_\beta-L_r^{-1}\nabla_\beta f_h(\bm{y}^r)\}
+ \end{aligned}
+ \label{eq:integrated-fista-prox}
+\end{equation}
+satisfies the full-segment sufficient check
+\begin{equation}
+ \mathfrak B_h(\bm{y}^r,\bm{x}^{r+1})
+       \le\frac{\omega L_r}{2}\|\bm{x}^{r+1}-\bm{y}^r\|_2^2.
+ \label{eq:integrated-fista-accept}
+\end{equation}
+Here $\mathfrak B_h$ is defined in~\eqref{eq:comp-positive-certificate}. The implemented values are $\omega=1/2$, an initial inverse step of 1, and a doubling factor of 2. The accepted $L_r$ is carried forward and does not decrease. After acceptance,
+\begin{equation}
+ \begin{gathered}
+\tau_{r+1}=\frac{1+\sqrt{1+4\tau_r^2}}2,\\
+ \bm{y}^{r+1}=\bm{x}^{r+1}+
+       \frac{\tau_r-1}{\tau_{r+1}}(\bm{x}^{r+1}-\bm{x}^r).
+ \end{gathered}
+ \label{eq:integrated-fista-momentum}
+\end{equation}
+The full gradient and KKT residual are recomputed at the returned point $\bm{x}^{r+1}$. Acceptance controls the quadratic majorant at the extrapolated point $\bm{y}^r$, so successive accepted objectives can increase. Theorem~\ref{thm:comp-convergence} applies to the reference Algorithm~1. The accelerated implementation uses the same objective and full-coordinate finite-tolerance interface to the statistical analysis.
+
+\subsection{Qualified active-face Newton refinement}
+\label{subsec:active-refinement}
+An approximately identified sparse face can be refined using its local curvature. This uses standard second-order ideas for composite optimization \citep{Lee2014}. At a finite input point, define
+\[
+ \mathcal A=\{1,\ldots,q\}\cup\{j>q:\vartheta_j\ne0\},
+ \qquad \mathcal \bm{Z}=\{j>q:\vartheta_j=0\}.
+\]
+Retain this set and the signs of the penalized active coordinates during the local call. Put $v_j=0$ for the unpenalized coordinates and $v_j=\operatorname{sign}(\vartheta_j)$ for the nonzero penalized coordinates. With $\bm{g}=\nabla f_h(\bm{\vartheta})$ and $\bm{H}=\nabla^2f_h(\bm{\vartheta})$, solve
+\begin{equation}
+ \begin{gathered}
+\bm{H}_{\mathcal A\mathcal A}\bm{d}_{\mathcal A}
+       =-(\bm{g}_{\mathcal A}+\lambda \bm{v}_{\mathcal A}),
+ \\
+ \bm{d}_{\mathcal \bm{Z}}=0.
+ \end{gathered}
+ \label{eq:integrated-face-newton}
+\end{equation}
+The numerically positive-definite active system is solved directly by Cholesky factorization.
+
+Let $\widehat s_{\mathcal A}=\widehat{\bm{g}}_{\mathcal A}+\lambda \bm{v}_{\mathcal A}$ and let $E$ denote the tracked gradient error budget. For a trial $t>0$ inside the original sign face, use the sufficient Armijo check
+\begin{equation}
+ \begin{gathered}
+t\widehat s_{\mathcal A}^{\top}\bm{d}_{\mathcal A}
+ +\mathfrak B_h(\bm{\vartheta},\bm{\vartheta}+t\bm{d})
+ +tE\|\bm{d}\|_1
+ \le c_A t\widehat s_{\mathcal A}^{\top}\bm{d}_{\mathcal A},
+ \\
+ c_A=10^{-4}.
+ \end{gathered}
+ \label{eq:integrated-face-armijo}
+\end{equation}
+Trial steps are halved as necessary. A 0.99 fraction-to-boundary rule retains the input signs, and every accepted candidate is checked on all original coordinates, including the numerical condition $|\widehat g_j|+E\le\lambda$ for every $j\in\mathcal \bm{Z}$. Here $E$ is the candidate's tracked gradient error budget. The local call stops if the fixed face, numerical curvature, or line-search requirements cease to hold. Passing the complete KKT test is required for a successful output.
+
+\subsection{Common numerical policy for training comparisons}
+\label{subsec:training-solver-policy}
+Both estimators use the same sequence of numerical operations in the training-validation study. Each candidate first receives up to 30,000 accepted FISTA updates at full-coordinate tolerance $10^{-7}$. A successful return is used directly. A return at the update limit qualifies for at most one active-face refinement if its last five distinct saved accepted checkpoints have identical exact $\bm{\beta}$ support and signs, the gradient budget is at most $10^{-8}$, and all zero-coordinate margins remain strictly positive after allowing for that budget. The refinement allows at most ten accepted Newton updates. Otherwise the candidate is recorded as numerically ineligible under the specified budget.
+
+The final parameter vector defines all coefficient blocks, the deployment slope~\eqref{eq:prediction-coefficients}, fitted scores, and full KKT residual. After refinement, these quantities are reconstructed from the new coefficients and unchanged design. The preceding successful candidate supplies the next warm start. This policy and the selection rule jointly define the procedure evaluated in Section~\ref{subsec:cv-results}.
