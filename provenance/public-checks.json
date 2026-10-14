@@ -1,0 +1,223 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "configuration_locked_budgets",
+      "pass": true
+    },
+    {
+      "name": "direct_pair_loss_block_1",
+      "pass": true
+    },
+    {
+      "name": "direct_pair_gradient_block_1",
+      "pass": true
+    },
+    {
+      "name": "direct_pair_loss_block_2",
+      "pass": true
+    },
+    {
+      "name": "direct_pair_gradient_block_2",
+      "pass": true
+    },
+    {
+      "name": "direct_pair_loss_block_64",
+      "pass": true
+    },
+    {
+      "name": "direct_pair_gradient_block_64",
+      "pass": true
+    },
+    {
+      "name": "independent_endpoint_objective",
+      "pass": true
+    },
+    {
+      "name": "independent_endpoint_full_KKT",
+      "pass": true
+    },
+    {
+      "name": "gradient_finite_difference",
+      "pass": true
+    },
+    {
+      "name": "Hessian_direct_pairs",
+      "pass": true
+    },
+    {
+      "name": "Hessian_dual_paths",
+      "pass": true
+    },
+    {
+      "name": "partial_prox_preserves_unpenalized_step",
+      "pass": true
+    },
+    {
+      "name": "KKT_includes_nuisance_active_and_zero",
+      "pass": true
+    },
+    {
+      "name": "remainder_uses_whole_residual_segment",
+      "pass": true
+    },
+    {
+      "name": "tail_normal_reference",
+      "pass": true
+    },
+    {
+      "name": "tail_subnormal_reference",
+      "pass": true
+    },
+    {
+      "name": "finite_log_budget_keeps_positive_mass",
+      "pass": true
+    },
+    {
+      "name": "fixed_FISTA_success",
+      "pass": true
+    },
+    {
+      "name": "fixed_FISTA_analytic_solution",
+      "pass": true
+    },
+    {
+      "name": "fixed_FISTA_budget_and_no_restart",
+      "pass": true
+    },
+    {
+      "name": "fixed_FISTA_full_KKT",
+      "pass": true
+    },
+    {
+      "name": "fixed_FISTA_adapter_once",
+      "pass": true
+    },
+    {
+      "name": "real_polish_success",
+      "pass": true
+    },
+    {
+      "name": "real_polish_analytic_solution",
+      "pass": true
+    },
+    {
+      "name": "real_polish_objective_descent",
+      "pass": true
+    },
+    {
+      "name": "real_polish_sign_preservation",
+      "pass": true
+    },
+    {
+      "name": "global_certificate_stays_false",
+      "pass": true
+    },
+    {
+      "name": "adapter_mock_one_conditional_polish",
+      "pass": true
+    },
+    {
+      "name": "adapter_keeps_original_FISTA_coefficients",
+      "pass": true
+    },
+    {
+      "name": "adapter_final_coefficients_beta_bpred",
+      "pass": true
+    },
+    {
+      "name": "adapter_final_gradient_and_predictions",
+      "pass": true
+    },
+    {
+      "name": "adapter_failure_does_not_retry",
+      "pass": true
+    },
+    {
+      "name": "adapter_requires_five_distinct_checkpoints",
+      "pass": true
+    },
+    {
+      "name": "adapter_rejects_stale_gradient",
+      "pass": true
+    },
+    {
+      "name": "FA_adapter_polish_final_gamma_and_bpred",
+      "pass": true
+    },
+    {
+      "name": "FA_adapter_prediction_final_coefficients",
+      "pass": true
+    },
+    {
+      "name": "held_out_data_do_not_change_PCA",
+      "pass": true
+    },
+    {
+      "name": "FA_frozen_prediction_formula",
+      "pass": true
+    },
+    {
+      "name": "FA_schema_column_reorder_rejected",
+      "pass": true
+    },
+    {
+      "name": "FA_final_beta_bpred_reconstructed",
+      "pass": true
+    },
+    {
+      "name": "validation_direct_pairs_1",
+      "pass": true
+    },
+    {
+      "name": "validation_fixed_sum_order_1",
+      "pass": true
+    },
+    {
+      "name": "validation_direct_pairs_2",
+      "pass": true
+    },
+    {
+      "name": "validation_fixed_sum_order_2",
+      "pass": true
+    },
+    {
+      "name": "validation_pair_weighted_aggregation",
+      "pass": true
+    },
+    {
+      "name": "failed_fold_disqualifies_candidate",
+      "pass": true
+    },
+    {
+      "name": "selection_tie_prefers_larger_lambda",
+      "pass": true
+    },
+    {
+      "name": "selection_all_failed",
+      "pass": true
+    },
+    {
+      "name": "failed_fit_does_not_advance_warm_start",
+      "pass": true
+    },
+    {
+      "name": "warm_start_scope_enforced",
+      "pass": true
+    },
+    {
+      "name": "RNG_state_unchanged",
+      "pass": true
+    }
+  ],
+  "metadata": {
+    "real_fista_calls": 1,
+    "real_polish_calls": 1,
+    "fista_accepted_updates": 22,
+    "polish_accepted_updates": 2,
+    "research_data_read": false,
+    "random_cohorts_generated": false
+  },
+  "R_version": "4.5.2",
+  "platform": "aarch64-apple-darwin20"
+}

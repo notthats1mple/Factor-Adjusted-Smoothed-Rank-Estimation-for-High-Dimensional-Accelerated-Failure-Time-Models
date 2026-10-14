@@ -1,11 +1,14 @@
-# Provenance and version policy
+# Source provenance
 
-The source is the authors' `AFT_Lifetime_Data_Analysis_v0_16` package. All 86 entries in its supplied SHA256 manifest matched at import. `provenance/source-v016.json` records hashes for each copied file; `SHA256SUMS.json` records the public candidate contents.
+The estimation modules and `renv.lock` are copied byte for byte from the archived research project. Their source paths and SHA256 values are recorded in [`provenance/algorithm-source.json`](../provenance/algorithm-source.json). This file also identifies the complete local archive by name and SHA256.
 
-The mathematical text, tables, figure files, bibliography, author names, and three reading PDFs are copied unchanged. The public build script compiles the main text, supplement, and combined copy independently of the submission-only title page. The repository checks document integrity and compilation; author declarations marked for confirmation retain their supplied status.
+The public release adds a loader, fixed-array examples, regression checks, dependency restoration, repository checks, and documentation. Its solver configuration is a subset of the archived v0.12 configuration, retaining the original numerical controls. The extraction record is stored alongside the public configuration.
 
-Private submission forms, telephone contact material, the submission-only title page, editing diffs, historical manuscript ZIPs, and machine-specific compilation logs are kept in the local archive. No private runtime or installed environment is copied into the repository.
+`SHA256SUMS.json` covers the published files. Run `python3 scripts/check_repository.py` to check those hashes, frozen algorithm identity, local documentation links, and publication contents. Maintainers can regenerate the release manifest after reviewing an intentional change:
 
-SVJour3 and the journal option file retain the supplied template provenance. They are third-party material; no project-wide license is applied to them. See `../template_provenance/README.md` and `THIRD_PARTY.md`.
+```sh
+python3 scripts/check_repository.py --write-manifest
+python3 scripts/check_repository.py
+```
 
-Repository preparation uses the v0.16 manuscript as a fixed source. Research-code versions and older result archives have separate identities. The repository's file checks do not rerun a model or change any saved result.
+The complete study inputs, fitted objects, trajectories, failure records, manuscript, and historical reports remain in the authors' local archive. Public tests use explicit small arrays and numerical reference fixtures. Their results validate the distributed code and its interfaces.

@@ -1,0 +1,25 @@
+#!/usr/bin/env Rscript
+args <- commandArgs(trailingOnly = FALSE)
+script <- sub("^--file=", "", args[grepl("^--file=", args)][1L])
+if (!file.exists(script)) script <- gsub("~+~", " ", script, fixed = TRUE)
+source(file.path(dirname(normalizePath(script)), "load_project.R"))
+cat("R executable:", file.path(R.home("bin"), "Rscript"), "\n")
+cat("R version:", as.character(getRversion()), "\n")
+cat("Platform:", R.version$platform, "\n")
+cat("Library paths:\n"); print(.libPaths())
+cat("BLAS:\n"); print(extSoftVersion()["BLAS"])
+cat("LAPACK:\n")
+if (exists("La_library", mode = "function")) print(La_library())
+if (!requireNamespace("jsonlite", quietly = TRUE)) stop("jsonlite is required to read renv.lock")
+lock <- jsonlite::fromJSON(file.path(aft_project_root(), "renv.lock"), simplifyVector = FALSE)
+versions <- do.call(rbind, lapply(names(lock$Packages), function(package) {
+  actual <- if (requireNamespace(package, quietly = TRUE)) packageDescription(package, fields = "Version") else NA_character_
+  data.frame(package = package, locked = lock$Packages[[package]]$Version,
+             installed = actual, matches_lock = !is.na(actual) && actual == lock$Packages[[package]]$Version)
+}))
+print(versions, row.names = FALSE)
+cat("Locked R version:", lock$R$Version, "\n")
+cat("Session:\n"); print(sessionInfo())
+if (!identical(as.character(getRversion()), lock$R$Version) || !all(versions$matches_lock))
+  stop("Environment differs from renv.lock; inspect the version table")
+cat("PASS: R and all locked package versions match.\n")

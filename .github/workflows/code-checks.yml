@@ -1,0 +1,40 @@
+name: Code checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixed-array-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VECLIB_MAXIMUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      R_LIBS_USER: ${{ github.workspace }}/.library
+    steps:
+      - name: Check out public code
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up the locked R version
+        uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          r-version: "4.5.2"
+          use-public-rspm: true
+      - name: Check release contents and frozen-source hashes
+        run: python3 scripts/check_repository.py
+      - name: Restore locked dependencies
+        run: Rscript --vanilla scripts/restore_dependencies.R
+      - name: Check the actual environment
+        run: Rscript --vanilla scripts/check_environment.R
+      - name: Run deterministic code checks
+        run: Rscript --vanilla scripts/run_checks.R
+      - name: Run the fixed-array example
+        run: Rscript --vanilla examples/fixed_array_demo.R

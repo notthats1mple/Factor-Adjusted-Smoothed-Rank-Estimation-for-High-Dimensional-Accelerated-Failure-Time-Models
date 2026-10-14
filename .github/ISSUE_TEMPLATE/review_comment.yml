@@ -1,12 +1,12 @@
-name: Peer review comment
-description: Report a mathematical, numerical, or reproducibility question.
+name: Code review or reproducibility
+description: Report a numerical, implementation, or reproducibility question.
 title: "[Review] "
 body:
   - type: input
     id: location
     attributes:
-      label: Manuscript location
-      description: Version, document, section, theorem, equation, figure, or table.
+      label: Code location
+      description: Commit, source file, function, and relevant configuration.
     validations:
       required: true
   - type: textarea
@@ -20,9 +20,9 @@ body:
     id: suggestion
     attributes:
       label: Suggested correction or verification
-      description: Include a derivation or minimal reproducer where useful.
+      description: Include a fixed-array reproducer with expected and observed output. Keep private datasets and credentials out of the issue.
   - type: input
     id: environment
     attributes:
-      label: Build environment, if relevant
-      description: Operating system, TeX and Python versions.
+      label: Runtime environment
+      description: R version, package versions, operating system, and BLAS/LAPACK. Remove personal filesystem paths before sharing.

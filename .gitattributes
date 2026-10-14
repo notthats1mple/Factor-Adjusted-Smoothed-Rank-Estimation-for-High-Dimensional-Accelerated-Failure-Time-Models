@@ -1,5 +1,1 @@
-* text=auto
-*.pdf binary
-*.eps -text
-*.png binary
-*.zip binary
+* text=auto eol=lf

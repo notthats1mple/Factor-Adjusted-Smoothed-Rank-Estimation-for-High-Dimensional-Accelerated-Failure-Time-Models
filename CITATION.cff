@@ -1,26 +1,27 @@
 cff-version: 1.2.0
-message: "Please cite the unpublished manuscript in preferred-citation when referring to this work."
-title: "Factor-Adjusted Smoothed Rank Estimation for High-Dimensional Accelerated Failure Time Models"
-version: "0.16"
-url: "https://github.com/notthats1mple/Factor-Adjusted-Smoothed-Rank-Estimation-for-High-Dimensional-Accelerated-Failure-Time-Models"
+message: "Please cite this software version when using or discussing the implementation."
+type: software
+title: "Factor-Adjusted Smoothed Rank Estimation for High-Dimensional Accelerated Failure Time Models: Research Software"
 authors:
-  - family-names: "ZHU"
-    given-names: "Weineng"
-    orcid: "https://orcid.org/0009-0009-2310-552X"
-    affiliation: "Department of Biostatistics, City University of Hong Kong, Hong Kong SAR, China"
-  - family-names: "JU"
-    given-names: "Yang"
-    orcid: "https://orcid.org/0009-0005-7285-3373"
-    affiliation: "Department of Biostatistics, City University of Hong Kong, Hong Kong SAR, China"
-preferred-citation:
-  type: unpublished
-  title: "Factor-Adjusted Smoothed Rank Estimation for High-Dimensional Accelerated Failure Time Models"
-  version: "0.16"
-  url: "https://github.com/notthats1mple/Factor-Adjusted-Smoothed-Rank-Estimation-for-High-Dimensional-Accelerated-Failure-Time-Models"
-  authors:
-    - family-names: "ZHU"
-      given-names: "Weineng"
-      orcid: "https://orcid.org/0009-0009-2310-552X"
-    - family-names: "JU"
-      given-names: "Yang"
-      orcid: "https://orcid.org/0009-0005-7285-3373"
+  - family-names: Zhu
+    given-names: Weineng
+  - family-names: Ju
+    given-names: Yang
+version: "0.17.0"
+date-released: 2026-10-14
+repository-code: "https://github.com/notthats1mple/Factor-Adjusted-Smoothed-Rank-Estimation-for-High-Dimensional-Accelerated-Failure-Time-Models"
+url: "https://github.com/notthats1mple/Factor-Adjusted-Smoothed-Rank-Estimation-for-High-Dimensional-Accelerated-Failure-Time-Models"
+abstract: >-
+  R research software for factor-adjusted, partially penalized smoothed
+  Gehan estimation in high-dimensional accelerated failure time models.
+  Includes training preprocessing, proximal-gradient and FISTA solvers,
+  fixed-active-face Newton refinement, complete KKT diagnostics,
+  frozen prediction, and training-validation components.
+keywords:
+  - accelerated failure time model
+  - right censoring
+  - factor adjustment
+  - smoothed Gehan loss
+  - partial L1 penalty
+  - numerical optimization
+  - R

@@ -1,10 +1,12 @@
-# Changes
+# Changelog
 
-## 0.16 repository candidate — 2026-10-14
+## 0.17.0 — 2026-10-14
 
-- Organize the authors' version 0.16 manuscript for peer review.
-- Preserve the main article, Online Resource 1, combined reading copy, mathematical sources, figures, tables, and bibliography.
-- Add citation metadata, reviewer navigation, integrity checks, and public build instructions.
-- Separate private submission material and adapt the build entry point.
+- Publish archived estimation, optimization, endpoint arithmetic, schema, and training-validation implementations with source hashes.
+- Add portable loading, a fixed-array example, regression checks, locked dependency restoration, and continuous integration.
+- Provide English and Chinese code documentation and a source review guide.
+- Remove manuscript PDFs, LaTeX, paper figures, and submission materials from the current repository tree. Earlier commits and the v0.16 tag remain part of repository history.
 
-This repository preparation does not change the paper's numerical evidence or execute new research computation.
+## 0.16 — 2026-10-14
+
+Initial author manuscript review repository.

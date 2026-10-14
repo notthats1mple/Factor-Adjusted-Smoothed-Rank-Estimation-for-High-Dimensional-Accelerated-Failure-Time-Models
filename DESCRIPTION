@@ -1,0 +1,13 @@
+Package: aftResearchCode
+Type: Project
+Title: Factor-Adjusted Smoothed Rank Estimation for High-Dimensional AFT Models
+Version: 0.17.0
+Authors@R: c(person("Weineng", "Zhu", role = "aut"), person("Yang", "Ju", role = "aut"))
+Description: Source-based research software for factor-adjusted smoothed Gehan
+    estimation, partially penalized optimization, fixed-active-face refinement,
+    and frozen training-validation mappings. Includes deterministic examples
+    and numerical checks. Load with scripts/load_project.R.
+Depends: R (>= 4.5.2)
+Imports: lpSolve, jsonlite
+Suggests: Matrix, testthat, renv
+Encoding: UTF-8

@@ -1,0 +1,15 @@
+{
+  "source_taskpack": "AFT_Polish_Review_CV_Handoff_v0_12",
+  "source_file": "cv/cv_config.json",
+  "source_sha256": "079dcfe547b4b4e790fc3a558b8f6269c20c540aaa47318d12cdea949dab5d7f",
+  "public_file": "config/solver_adapter.json",
+  "public_sha256": "93328e33e6be7217c25ae725ae86975a3d5716a7b7651b3c1d81d0f84f5d4a12",
+  "retained_fields": [
+    "protocol_version",
+    "fista",
+    "polish_gate",
+    "polish",
+    "candidate_acceptance"
+  ],
+  "field_values_unchanged": true
+}

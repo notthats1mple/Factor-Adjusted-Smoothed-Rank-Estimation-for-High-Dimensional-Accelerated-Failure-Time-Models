@@ -1,38 +1,33 @@
-# Review guide
+# Code review guide
 
-The central question is how estimated factor coordinates support sparse coefficient estimation in a high-dimensional, right-censored AFT model. The manuscript develops the target representation, statistical bounds, and numerical accuracy interface in that order.
+Start with the fixed demonstration, then follow an input through preprocessing, optimization, endpoint verification, and prediction:
 
-## Reading map
+```sh
+Rscript --vanilla scripts/check_environment.R
+Rscript --vanilla scripts/run_checks.R
+Rscript --vanilla examples/fixed_array_demo.R
+```
 
-| Question | Main manuscript | Supporting material |
+## Review map
+
+| Question | Primary source | What to inspect |
 |---|---|---|
-| What coefficient is being estimated, and what does factor adjustment change? | Sections 2–3: ordinary and additional-factor models, partial penalty, reference representation, and frozen prediction map | Appendices A–B |
-| How do censoring, pairwise fluctuations, and estimated design enter the coefficient bounds? | Section 4: conditional analysis and primitive factor-design conditions | Appendices C–D |
-| How is the objective solved and numerical accuracy interpreted? | Section 5: reference proximal gradient, complete KKT residual, acceleration, and qualified active-face refinement | Appendices E and G |
-| What do the saved computations and training selections show? | Section 6: active curvature, refinement, validation paths, and selected model summaries | Appendix F and the supplementary trajectory figure |
-| What follows from these results? | Section 7: interpretation and the next empirical questions | Reproducibility notes and source documentation |
+| Which coordinates are penalized? | [R/preprocess.R](../R/preprocess.R), [R/diagnostics.R](../R/diagnostics.R) | `(theta, gamma, beta)` ordering, nuisance dimension `q`, partial proximal map |
+| Is the pairwise objective implemented consistently? | [R/loss.R](../R/loss.R), [diagnostics/phase2b/endpoint.R](../diagnostics/phase2b/endpoint.R) | Event anchoring, off-diagonal normalization, tail arithmetic, independent endpoint calculation |
+| Does FISTA follow its stated contract? | [optim/phase2c/fista.R](../optim/phase2c/fista.R) | Extrapolated gradient, nondecreasing `L`, whole-segment acceptance, returned-point KKT |
+| Does Newton remain on the specified face? | [optim/active_face_polish/polish.R](../optim/active_face_polish/polish.R), [optim/active_face_polish/arithmetic.R](../optim/active_face_polish/arithmetic.R) | Hessian cross-check, signs, exact zeros, inactive inequalities, recorded trials |
+| Are final prediction fields consistent after refinement? | [tuning/phase3a/adapter.R](../tuning/phase3a/adapter.R) | Rebuilt gradient, `beta`, `b_pred`, and fitted scores at final coefficients |
+| Is validation isolated from preprocessing? | [tuning/phase3a/data_validation.R](../tuning/phase3a/data_validation.R), [pilot/schema.R](../pilot/schema.R) | Training-complement fit, frozen map, column schema, within-fold pairs, eligibility rules |
+| Are source and environment versions identifiable? | [provenance/algorithm-source.json](../provenance/algorithm-source.json), [renv.lock](../renv.lock) | Source hashes, locked package versions, local environment output |
 
-Read [the main paper](../manuscript/main.pdf) with [Online Resource 1](../manuscript/ESM_1.pdf), or use [the complete version](../manuscript/complete.pdf) for continuous reading.
+[Algorithms](ALGORITHMS.md) provides formulas and field definitions. [Reproducibility](REPRODUCIBILITY.md) explains how to run the checks.
 
-## Points for technical review
+## Numerical outcomes
 
-1. **Target and representation.** Check how the ordinary observed-covariate slope is represented in estimated-factor coordinates, and how the additional-factor model introduces its separate approximation term. Distinguish the sparse residual coefficient from the deployed prediction slope.
-2. **Conditions and proof dependencies.** Follow the common-error and conditional-censoring assumptions into score centering and local curvature, then the factor-design conditions into the coefficient bounds. The fixed-tuning conditions are stated with the theoretical results.
-3. **Numerical interface.** Check the full-coordinate KKT criterion and its statistical tolerance implication. The reference proximal-gradient theorem, executed accelerated recursion, and fixed-face Newton step have separately specified roles.
-4. **Evidence and interpretation.** Relate spectral diagnostics to residual directions and work at a common accuracy. In the training-selection results, retain the failed candidate and boundary selections when interpreting the chosen models.
+Read the returned status together with full KKT and the tracked numerical budget. Review successful endpoints, explicit failures, iteration limits, and gate rejections as distinct outcomes. Counts of accepted updates and gradient evaluations describe different aspects of computational cost; preserve both when comparing runs.
 
-## Reporting a comment
+The fixed arrays support implementation-level review. Claims about the full research study should be assessed against its archived training inputs, fit records, and execution protocol.
 
-A useful comment identifies:
+## Report a finding
 
-- the document and stable section, theorem, equation, figure, or table label;
-- the statement under review;
-- the mathematical issue, evidence discrepancy, or wording improvement;
-- the proposed correction, with any supporting derivation or source.
-
-For numerical comments, include the scenario, method, and penalty value. For a proof issue, identify the first step whose justification needs attention and the assumptions it uses. This keeps scientific questions distinct from presentation changes.
-
-## Repository and document status
-
-This is the unpublished v0.16 author review draft. The supplied PDFs preserve the author package, including declarations that await confirmation. Compilation instructions, reference checks, and available verification records are in [Reproducibility](REPRODUCIBILITY.md); the origin of the manuscript, template files, and repository adaptations is recorded in [Provenance](PROVENANCE.md).
-
+Include the commit, R and package versions, command, minimal input, expected behavior, actual behavior, and relevant status or trace fields. For a formula discrepancy, identify the coordinate or pair and show the two computed quantities. For a documentation correction, identify the function and the proposed wording. Keep private data and credentials out of issue attachments.

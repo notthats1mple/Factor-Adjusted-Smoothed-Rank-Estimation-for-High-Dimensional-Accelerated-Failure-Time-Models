@@ -1,0 +1,96 @@
+{
+  "archive_name": "AFT_All_Work_20261014.zip",
+  "archive_sha256": "69c2bdc5f72366590d215d0a078bd2e86564cd10b1e415a78dfac83445dff75f",
+  "files": [
+    {
+      "path": "R/preprocess.R",
+      "archive_project_path": "R/preprocess.R",
+      "sha256": "23faaae431ae9dcd9399ef4fba3c23fa9be249172d2de093bd5c08f38ca6f67d",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "R/loss.R",
+      "archive_project_path": "R/loss.R",
+      "sha256": "027061b0e173845a73487be14b8ffea9c3afc574da1ac748eebd9917a69561e2",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "R/diagnostics.R",
+      "archive_project_path": "R/diagnostics.R",
+      "sha256": "55e6a4e6cea459000dea78160658bb537bf23a7b4cc6705b7fb8400ba1f58346",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "R/solver.R",
+      "archive_project_path": "R/solver.R",
+      "sha256": "8ceda5380bc522d0c9b8bea2622f6a767b74cd46605347710bf571ea4bc0b0e7",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "R/path.R",
+      "archive_project_path": "R/path.R",
+      "sha256": "5b1ddb4853ad52081e04a2f8f0bdef924156e9f768d83e9282c5781e25a9ff68",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "optim/phase2c/fista.R",
+      "archive_project_path": "optim/phase2c/fista.R",
+      "sha256": "5f982a359cf343050aa3a11c23ad23ff042755a691fd9dff2f1c46e7716c4e7f",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "optim/phase2c/arithmetic.R",
+      "archive_project_path": "optim/phase2c/arithmetic.R",
+      "sha256": "c4cdc93e6cfdb1f34c3cf6749e9fbcf4a157d15b3ece6c0dabf59fc7c0fbcc1d",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "optim/active_face_polish/arithmetic.R",
+      "archive_project_path": "optim/active_face_polish/arithmetic.R",
+      "sha256": "b28d19d344934d3d100f16892ee24084d523e79f390ad412e8a801163d0bf449",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "optim/active_face_polish/polish.R",
+      "archive_project_path": "optim/active_face_polish/polish.R",
+      "sha256": "2df276907739d8288661609cca350136044b05be2b454aa9704debee52a3f79d",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "diagnostics/phase2b/endpoint.R",
+      "archive_project_path": "diagnostics/phase2b/endpoint.R",
+      "sha256": "41333cf009b7d53fdb6f92db9e3fb9f098b3ac1aecceb1fe7bb3a4304dc1e088",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "tuning/phase3a/adapter.R",
+      "archive_project_path": "tuning/phase3a/adapter.R",
+      "sha256": "1fb199751b776face51443b0040c009e28d01d255545fe4b7f8686188f0f976f",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "tuning/phase3a/data_validation.R",
+      "archive_project_path": "tuning/phase3a/data_validation.R",
+      "sha256": "347563444b9bcb604f0a95847d5772dc809558643c4f96025f949aa17909176c",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "renv.lock",
+      "archive_project_path": "renv.lock",
+      "sha256": "35dfeb52bc638fc8ee9aba6ac1516177b2e843ac37d42d3cf11216ef3e634dee",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "pilot/schema.R",
+      "archive_project_path": "pilot/schema.R",
+      "sha256": "aeb1b3e00066745fa078fc8ef700065e06ac1b4bc0cea78edf5be7c3968fa787",
+      "change": "byte-identical archived implementation"
+    },
+    {
+      "path": "tests/fixtures/tail_reference.csv",
+      "archive_project_path": "tests/fixtures/tail_reference.csv",
+      "sha256": "77c1133c3a9fe33462c5604026bdca094b98ec56a665b4ce140560d87bb246c8",
+      "change": "byte-identical fixed high-precision arithmetic reference"
+    }
+  ]
+}

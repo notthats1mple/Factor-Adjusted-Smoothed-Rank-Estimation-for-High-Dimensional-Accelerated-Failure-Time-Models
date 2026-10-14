@@ -1,0 +1,58 @@
+{
+  "protocol_version": "0.12",
+  "fista": {
+    "function": "aft_solve_fista_experimental",
+    "kkt_tol": 1e-07,
+    "max_iter": 30000,
+    "max_backtracks": 80,
+    "L_initial": 1,
+    "L_growth": 2,
+    "omega": 0.5,
+    "block_size": 64,
+    "lp_tolerance": 1e-09,
+    "rank_tolerance": 1e-10,
+    "restart": false,
+    "L_may_decrease": false,
+    "full_KKT_every_accepted_point": true,
+    "checkpoint_every_updates": 1000,
+    "automatic_resume": false
+  },
+  "polish_gate": {
+    "stage": "after the one fixed-budget FISTA return only",
+    "max_calls_per_penalized_fit": 1,
+    "required_fista_status": "iteration_limit",
+    "required_saved_checkpoints": 5,
+    "checkpoints": "last five distinct accepted-update checkpoints, including terminal if coincident",
+    "exact_beta_support_and_sign_stable": true,
+    "gradient_budget_fraction": 0.1,
+    "strict_inactive_margin": true,
+    "positive_definiteness": "polisher performs its frozen spectrum and Cholesky checks",
+    "early_trigger": false,
+    "retry_after_failure": false,
+    "resume_fista_after_polish": false
+  },
+  "polish": {
+    "function": "aft_polish_active_face",
+    "kkt_tol": 1e-07,
+    "max_newton_updates": 10,
+    "max_backtrack_halvings": 30,
+    "armijo_constant": 0.0001,
+    "backtrack_factor": 0.5,
+    "fraction_to_sign_boundary": 0.99,
+    "hessian_rank_factor": 100,
+    "linear_system_relative_backward_error": 1e-10,
+    "gradient_budget_fraction": 0.1,
+    "independent_endpoint_atol": 1e-10,
+    "independent_objective_rtol": 1e-12,
+    "block_size": 64
+  },
+  "candidate_acceptance": {
+    "all_original_coordinates": true,
+    "KKT_plus_budget_max": 1e-07,
+    "global_optimum_certified": false,
+    "post_return_independent_arithmetic_atol": 1e-10,
+    "post_return_objective_rtol": 1e-12,
+    "warm_start": "last successful candidate within same method/fold/h only",
+    "cross_fold_or_historical_warm_start": false
+  }
+}
