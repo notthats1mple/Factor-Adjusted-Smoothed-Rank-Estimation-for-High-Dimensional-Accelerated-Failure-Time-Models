@@ -11,7 +11,7 @@ Rscript --vanilla scripts/restore_dependencies.R
 Rscript --vanilla scripts/check_environment.R
 ```
 
-The restoration script prepares the locked package environment using [`renv::restore()`](https://rstudio.github.io/renv/reference/restore.html). It fixes `renv` at **1.2.4**, uses `retry = FALSE`, and checks the installed package versions against the lock. Preserve installation errors and resolve the reported dependency or toolchain issue while retaining the lock file. A prepared environment can go directly to the environment check.
+The restoration script prepares the locked package environment using [`renv::restore()`](https://rstudio.github.io/renv/reference/restore.html). It fixes `renv` at **1.2.4**, uses `retry = FALSE`, and checks the installed package versions against the lock. Preserve installation errors and resolve the reported dependency or toolchain issue while retaining the lock file. Matching recommended packages supplied with R, such as `Matrix`, may be reused from that R installation; verification checks the effective library search path and every locked version. A prepared environment can go directly to the environment check.
 
 For comparable numerical records, use a single BLAS thread when launching R:
 

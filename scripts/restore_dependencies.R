@@ -39,9 +39,12 @@ renv::restore(project = root, library = normalizePath(library_path),
               retry = FALSE, clean = FALSE, transactional = TRUE)
 lock <- jsonlite::read_json(file.path(root, "renv.lock"), simplifyVector = FALSE)
 stopifnot(getRversion() == package_version(lock$R$Version))
+# renv can reuse matching recommended packages from the selected R library.
+# Check the package R will actually load, with the project library first.
+.libPaths(c(normalizePath(library_path), .libPaths()))
 for (name in names(lock$Packages)) {
   expected <- package_version(lock$Packages[[name]]$Version)
-  actual <- packageVersion(name, lib.loc = library_path)
+  actual <- packageVersion(name)
   if (actual != expected) stop(paste("Locked version mismatch:", name))
 }
 cat("Restored and checked", length(lock$Packages), "locked packages.\n")
