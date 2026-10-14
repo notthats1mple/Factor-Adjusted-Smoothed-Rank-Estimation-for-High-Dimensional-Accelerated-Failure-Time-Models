@@ -1,1 +1,3 @@
 * text=auto eol=lf
+# Preserve archived fixture bytes across operating systems.
+tests/fixtures/*.csv -text
